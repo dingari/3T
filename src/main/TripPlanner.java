@@ -62,4 +62,128 @@ public class TripPlanner {
 		return new TripCombo(new FlightMock(), new HotelMock(), new TourMock());
 	}
 
+
+
+	// Getters and setters
+
+
+	public String getDepLocation() {
+		return depLocation;
+	}
+
+	public void setDepLocation(String depLocation) {
+		this.depLocation = depLocation;
+	}
+
+	public String getDestLocation() {
+		return destLocation;
+	}
+
+	public void setDestLocation(String destLocation) {
+		this.destLocation = destLocation;
+	}
+
+	public Date getDepTime() {
+		return depTime;
+	}
+
+	public void setDepTime(Date depTime) {
+		this.depTime = depTime;
+	}
+
+	public Date getReturnTime() {
+		return returnTime;
+	}
+
+	public void setReturnTime(Date returnTime) {
+		this.returnTime = returnTime;
+	}
+
+	public boolean isOneWay() {
+		return oneWay;
+	}
+
+	public void setOneWay(boolean oneWay) {
+		this.oneWay = oneWay;
+	}
+
+	public int getNumPeople() {
+		return numPeople;
+	}
+
+	public void setNumPeople(int numPeople) {
+		this.numPeople = numPeople;
+	}
+
+	public int getPriceLower() {
+		return priceLower;
+	}
+
+	public void setPriceLower(int priceLower) {
+		this.priceLower = priceLower;
+	}
+
+	public int getPriceHigher() {
+		return priceHigher;
+	}
+
+	public void setPriceHigher(int priceHigher) {
+		this.priceHigher = priceHigher;
+	}
+
+	public String[] getExcludedAirlines() {
+		return excludedAirlines;
+	}
+
+	public void setExcludedAirlines(String[] excludedAirlines) {
+		this.excludedAirlines = excludedAirlines;
+	}
+
+	public String[] getExcludedHotels() {
+		return excludedHotels;
+	}
+
+	public void setExcludedHotels(String[] excludedHotels) {
+		this.excludedHotels = excludedHotels;
+	}
+
+	public int getTourDuration() {
+		return tourDuration;
+	}
+
+	public void setTourDuration(int tourDuration) {
+		this.tourDuration = tourDuration;
+	}
+
+	public List<String> getTourType() {
+		return tourType;
+	}
+
+	public void setTourType(List<String> tourType) {
+		this.tourType = tourType;
+	}
+
+	public FlightSearchService getFlightSearch() {
+		return flightSearch;
+	}
+
+	public void setFlightSearch(FlightSearchService flightSearch) {
+		this.flightSearch = flightSearch;
+	}
+
+	public HotelFinderService getHotelSearch() {
+		return hotelSearch;
+	}
+
+	public void setHotelSearch(HotelFinderService hotelSearch) {
+		this.hotelSearch = hotelSearch;
+	}
+
+	public TourSearchService getTourSearch() {
+		return tourSearch;
+	}
+
+	public void setTourSearch(TourSearchService tourSearch) {
+		this.tourSearch = tourSearch;
+	}
 }
