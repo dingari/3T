@@ -317,8 +317,28 @@ public class Main extends Application {
         searchButton.setOnAction(e -> {
             System.out.println("button");
         });
+        /*
 
-        // css style ids and more
+
+                         Tooltips
+
+
+        */
+
+
+        Tooltip.install(buttonCart, new Tooltip("View a list of items you have added to the cart"));
+        Tooltip.install(buttonFlights, new Tooltip("Search for flights matching your criteria"));
+        Tooltip.install(buttonHotels, new Tooltip("Search for hotels matching your criteria"));
+        Tooltip.install(buttonTours, new Tooltip("Search for tours matching your criteria"));
+
+
+        /*
+
+
+                         Style
+
+
+        */
         mainFlights.setId("main");
         mainHotels.setId("main");
         mainTours.setId("main");
@@ -344,6 +364,9 @@ public class Main extends Application {
         searchButton.setMaxWidth(Double.MAX_VALUE);
 
         primaryStage.setTitle("Trip Planner 3000");
+
+        Image icon = new Image(getClass().getResourceAsStream("icon.png"));
+        primaryStage.getIcons().add(icon);
 
         Scene scene = new Scene(borderPane, 800, 600);
         primaryStage.setScene(scene);
