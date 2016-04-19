@@ -1,4 +1,4 @@
-﻿package sample;
+package sample;
 
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -17,20 +17,35 @@ import java.time.LocalDate;
 
 public class Main extends Application {
 
-    // TABLE DATA LIST
-    public ObservableList<tableFlights> gettableFlights(){
-        ObservableList<tableFlights> flights = FXCollections.observableArrayList();
-        flights.add(new tableFlights("Casablanca","Isafjordur",500,0));
-        flights.add(new tableFlights("Reykjavik","Isafjordur",800,0));
+    // TABLE MOCK OBJECTS
+    public ObservableList<Flights> getFlights(){
+        ObservableList<Flights> flights = FXCollections.observableArrayList();
+        flights.add(new Flights("Casablanca","Isafjordur","Isafjordur","Isafjordur",1000));
+        flights.add(new Flights("Egilsstadir","Keflavik","Isafjordur","Isafjordur",8000));
         return flights;
     }
 
+    public ObservableList<Hotels> getHotels(){
+        ObservableList<Hotels> hotels = FXCollections.observableArrayList();
+        hotels.add(new Hotels("Eyjahótel", "Hilton Hotels", "Reykjavík", 50000));
+        hotels.add(new Hotels("Peyja", "SK Hotels", "Egilsstadir", 20000));
+        return hotels;
+    }
+
+    public ObservableList<Tours> getTours(){
+        ObservableList<Tours> tours = FXCollections.observableArrayList();
+        tours.add(new Tours("Rafting ehf.", "River rafting", "Reykjavík",3, 20000));
+        tours.add(new Tours("Paint ehf.", "Paintball", "Egilsstadir", 2,15000));
+        return tours;
+    }
+
     // Create tables
-    TableView<tableFlights> tableViewFlights;
+    TableView<Flights> tableViewFlights;
+    TableView<Hotels> tableViewHotels;
+    TableView<Tours> tableViewTours;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
 
 
         // Top menu
@@ -112,24 +127,33 @@ public class Main extends Application {
                 flightsPassengersLabel,
                 flightsPassengersNumber);
 
-        // flights data center
+        // FLIGHTS COLUMN SETUP
 
         // flights from column setup
-        TableColumn<tableFlights, String> columnFlightFrom = new TableColumn<>("From");
-        columnFlightFrom.setCellValueFactory(new PropertyValueFactory<>("locationFromData"));
-        // flights to column setup
-        TableColumn<tableFlights, String> columnFlightTo = new TableColumn<>("To");
-        columnFlightTo.setCellValueFactory(new PropertyValueFactory<>("locationToData"));
-        // flights price column setup
-        TableColumn<tableFlights, Double> columnFlightPrice = new TableColumn<>("Price");
-        columnFlightPrice.setCellValueFactory(new PropertyValueFactory<>("priceData"));
-        // flights passengers column setup
-        TableColumn<tableFlights, Integer> columnFlightPassengers = new TableColumn<>("Passengers");
-        columnFlightPassengers.setCellValueFactory(new PropertyValueFactory<>("passengersData"));
+        TableColumn<Flights, String> columnFlightDepartureTime = new TableColumn<>("Departure");
+        columnFlightDepartureTime.setCellValueFactory(new PropertyValueFactory<>("flightDepartureTime"));
+        // flights from column setup
+        TableColumn<Flights, String> columnFlightArrivalTime = new TableColumn<>("Arrival");
+        columnFlightArrivalTime.setCellValueFactory(new PropertyValueFactory<>("flightArrivalTime"));
+        // flights from column setup
+        TableColumn<Flights, String> columnFlightAirportFrom = new TableColumn<>("Airport dep.");
+        columnFlightAirportFrom.setCellValueFactory(new PropertyValueFactory<>("flightAirportFrom"));
+        // flights from column setup
+        TableColumn<Flights, String> columnFlightAirportTo = new TableColumn<>("Airport arr.");
+        columnFlightAirportTo.setCellValueFactory(new PropertyValueFactory<>("flightAirportTo"));
+        // flights from column setup
+        TableColumn<Flights, Integer> columnFlightPrice = new TableColumn<>("Price");
+        columnFlightPrice.setCellValueFactory(new PropertyValueFactory<>("flightPrice"));
+
 
         tableViewFlights = new TableView<>();
-        tableViewFlights.setItems(gettableFlights());
-        tableViewFlights.getColumns().addAll(columnFlightFrom,columnFlightTo,columnFlightPrice,columnFlightPassengers);
+        tableViewFlights.setItems(getFlights());
+        tableViewFlights.getColumns().addAll(
+                columnFlightDepartureTime,
+                columnFlightArrivalTime,
+                columnFlightAirportFrom,
+                columnFlightAirportTo,
+                columnFlightPrice);
 
         // flights VIEW
 
@@ -147,9 +171,32 @@ public class Main extends Application {
         Label label2 = new Label("HOTELS");
         menuHotels.getChildren().addAll(label2);
 
+
+         // hotels from column setup
+        TableColumn<Hotels, String> columnHotelName = new TableColumn<>("Hotel Name");
+        columnHotelName.setCellValueFactory(new PropertyValueFactory<>("HotelName"));
+        // hotels from column setup
+        TableColumn<Hotels, String> columnHotelChain = new TableColumn<>("Hotel Chain");
+        columnHotelChain.setCellValueFactory(new PropertyValueFactory<>("HotelChain"));
+        // hotels from column setup
+        TableColumn<Hotels, String> columnHotelLocation = new TableColumn<>("Hotel Location");
+        columnHotelLocation.setCellValueFactory(new PropertyValueFactory<>("HotelLocation"));
+        // flights from column setup
+        TableColumn<Hotels, Integer> columnHotelPrice = new TableColumn<>("Price");
+        columnHotelPrice.setCellValueFactory(new PropertyValueFactory<>("HotelPrice"));
+
+
+        tableViewHotels = new TableView<>();
+        tableViewHotels.setItems(getHotels());
+        tableViewHotels.getColumns().addAll(
+                columnHotelName,
+                columnHotelChain,
+                columnHotelLocation,
+                columnHotelPrice);
+
         HBox mainHotels = new HBox();
         Label dataHotels = new Label("HOTEL DATA WILL BE DISPLAYED HERE");
-        mainHotels.getChildren().addAll(dataHotels);
+        mainHotels.getChildren().addAll(tableViewHotels);
 
         /*
 
@@ -162,9 +209,37 @@ public class Main extends Application {
         Label label3 = new Label("TOURS");
         menuTours.getChildren().addAll(label3);
 
+
+        // TOURS TABLES
+
+        // Tours from column setup
+        TableColumn<Tours, String> columnTourName = new TableColumn<>("Tour Name");
+        columnTourName.setCellValueFactory(new PropertyValueFactory<>("TourName"));
+        // Tours from column setup
+        TableColumn<Tours, String> columnTourType = new TableColumn<>("Tour Type");
+        columnTourType.setCellValueFactory(new PropertyValueFactory<>("TourType"));
+        // Tours from column setup
+        TableColumn<Tours, String> columnTourDeparture = new TableColumn<>("Tour Departure");
+        columnTourDeparture.setCellValueFactory(new PropertyValueFactory<>("TourDeparture"));
+        // Tours from column setup
+        TableColumn<Tours, Integer> columnTourDuration = new TableColumn<>("Tour Duration");
+        columnTourDuration.setCellValueFactory(new PropertyValueFactory<>("TourDuration"));
+        // Tours from column setup
+        TableColumn<Tours, String> columnTourPrice = new TableColumn<>("Tour Price");
+        columnTourPrice.setCellValueFactory(new PropertyValueFactory<>("TourPrice"));
+
+        tableViewTours = new TableView<>();
+        tableViewTours.setItems(getTours());
+        tableViewTours.getColumns().addAll(
+                columnTourName,
+                columnTourType,
+                columnTourDeparture,
+                columnTourDuration,
+                columnTourPrice);
+
         HBox mainTours = new HBox();
         Label dataTours = new Label("TOUR DATA WILL BE DISPLAYED HERE");
-        mainTours.getChildren().addAll(dataTours);
+        mainTours.getChildren().addAll(tableViewTours);
 
         /*
 

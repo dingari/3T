@@ -1,0 +1,21 @@
+﻿TABLES ------------------------------------
+
+___flights___
+Time departure string
+Time arrival string
+Airport from string
+Airport to string
+Price int
+
+___hotels___
+Hotel name string
+Hotel chain string 
+Hotel Location string
+Price int
+
+___tours____
+Name string
+Type string
+Destination string
+Duration string
+Price int
