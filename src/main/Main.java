@@ -291,7 +291,10 @@ public class Main extends Application {
         //setup
 
         primaryStage.setTitle("Trip Planner 3000");
-        primaryStage.setScene(new Scene(borderPane, 800, 600));
+
+        Scene scene = new Scene(borderPane, 800, 600);
+        primaryStage.setScene(scene);
+        scene.getStylesheets().add("main/style.css");
         primaryStage.show();
     }
 
