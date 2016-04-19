@@ -8,6 +8,9 @@ import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -20,6 +23,7 @@ import main.service.FlightSearchService;
 import main.service.HotelFinderService;
 import main.service.TourSearchService;
 
+import java.awt.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +53,7 @@ public class Main extends Application {
     // TODO: add this
 
     // Tour specific parameters
-    // TODO: add this
+
 
     // TABLE MOCK OBJECTS
     public ObservableList<Flight> getFlights(){
@@ -357,7 +361,63 @@ public class Main extends Application {
         */
         VBox menuTours = new VBox();
         Label label3 = new Label("TOURS");
-        menuTours.getChildren().addAll(label3);
+
+        DatePicker tourDepartDate = new DatePicker();
+
+        Label tourDepartureLabel = new Label("Departure");
+        ComboBox<String> tourDeparture = new ComboBox<String>();
+        tourDeparture.getItems().addAll("Reykjavik","Akureyri","Egilsstadir","Isafjordur","Casablanca");
+        tourDeparture.setValue("Reykjavik");
+        tourDeparture.setMaxWidth(Double.MAX_VALUE);
+
+        Label tourDestinationLabel = new Label("Destination");
+        ComboBox<String> tourDestination = new ComboBox<String>();
+        tourDestination.getItems().addAll("Reykjavik","Akureyri","Egilsstadir","Isafjordur","Casablanca");
+        tourDestination.setValue("Reykjavik");
+        tourDestination.setMaxWidth(Double.MAX_VALUE);
+
+        Label tourDurationLabel = new Label("Tour duration");
+        TextField tourDurationLower = new TextField();
+        TextField tourDurationHigher = new TextField();
+
+        Label tourTypeLabel = new Label("Type");
+        ComboBox<String> tourType = new ComboBox<>();
+        tourType.getItems().addAll("Adventure", "Historic", "Walking");
+        tourType.setValue("Adventure");
+        tourType.setMaxWidth(Double.MAX_VALUE);
+
+        TextField tourRating = new TextField();
+        tourRating.setPromptText("Rating");
+        tourRating.setMaxWidth(Double.MAX_VALUE);
+
+        CheckBox tourHotelPickup = new CheckBox("Hotel pickup");
+
+        ComboBox<String> tourName = new ComboBox<>();
+        tourName.getItems().addAll("asdf", "fdas", "sadf");
+        tourName.setValue("asdf");
+        tourName.setMaxWidth(Double.MAX_VALUE);
+
+        Button tourSearchButton = new Button("Search", new ImageView(imageSearch));
+        tourSearchButton.setMaxWidth(Double.MAX_VALUE);
+
+
+        menuTours.getChildren().addAll(
+                label3,
+                tourDepartDate,
+                tourDepartureLabel,
+                tourDeparture,
+                tourDestinationLabel,
+                tourDestination,
+                tourDurationLabel,
+                tourDurationLower,
+                tourDurationHigher,
+                tourTypeLabel,
+                tourType,
+                tourRating,
+                tourHotelPickup,
+                tourName,
+                tourSearchButton
+        );
 
 
         // TOURS TABLES
@@ -431,7 +491,7 @@ public class Main extends Application {
             borderPane.setCenter(mainHotels);
         });
         buttonTours.setOnAction(e -> {
-            // borderPane.setLeft(menuTours);
+            borderPane.setLeft(menuTours);
             borderPane.setCenter(mainTours);
         });
         buttonCart.setOnAction(e -> {
