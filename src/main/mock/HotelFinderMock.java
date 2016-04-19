@@ -12,7 +12,12 @@ public class HotelFinderMock implements HotelFinderService {
 
     @Override
     public ArrayList<Hotel> getFreeRoomsFromHotel(String hotelName) {
-        return null;
+        ArrayList<Hotel> list = new ArrayList<>();
+        list.add(new HotelMock());
+        list.add(new HotelMock());
+        list.add(new HotelMock());
+
+        return list;
     }
 
     @Override
@@ -32,7 +37,13 @@ public class HotelFinderMock implements HotelFinderService {
 
     @Override
     public ArrayList<Hotel> getFreeRoomsFromAnyHotel() {
-        return null;
+        ArrayList<Hotel> list = new ArrayList<>();
+        list.add(new HotelMock());
+        list.add(new HotelMock());
+        list.add(new HotelMock());
+
+        return list;
+
     }
 
     @Override

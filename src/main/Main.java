@@ -14,15 +14,13 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import main.mock.Flight;
-import main.mock.FlightSearchMock;
-import main.mock.HotelFinderMock;
-import main.mock.TourSearchMock;
+import main.mock.*;
 import main.service.FlightSearchService;
 import main.service.HotelFinderService;
 import main.service.TourSearchService;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Main extends Application {
@@ -32,34 +30,45 @@ public class Main extends Application {
     TourSearchService tourSearch;
     TripPlanner tripPlanner;
 
+    List<Flight> flightResults;
+    List<HotelWrapper> hotelResults;
+    List<Tour> tourResults;
+
+    String departureDate;
+    String returnDate;
+    String departLocation;
+    String destLocation;
+    int numPeople;
+
+
 
     // TABLE MOCK OBJECTS
-    public ObservableList<Flights> getFlights(){
-        ObservableList<Flights> flights = FXCollections.observableArrayList();
-        flights.add(new Flights("Casablanca","Isafjordur","Isafjordur","Isafjordur",1000));
-        flights.add(new Flights("Egilsstadir","Keflavik","Isafjordur","Isafjordur",8000));
-
-        return flights;
+    public ObservableList<Flight> getFlights(){
+        flightSearch = new FlightSearchMock();
+        flightResults = flightSearch.searchFlightByCriteria(departureDate, departLocation, destLocation, numPeople);
+        // TODO: filter
+        return FXCollections.observableArrayList(flightResults);
     }
 
-    public ObservableList<Hotels> getHotels(){
-        ObservableList<Hotels> hotels = FXCollections.observableArrayList();
-        hotels.add(new Hotels("Eyjahótel", "Hilton Hotels", "Reykjavík", 50000));
-        hotels.add(new Hotels("Peyja", "SK Hotels", "Egilsstadir", 20000));
-        return hotels;
+    public ObservableList<HotelWrapper> getHotels(){
+        hotelSearch = new HotelFinderMock(departureDate, returnDate);
+        ArrayList<Hotel> hotels = hotelSearch.getFreeRoomsFromAnyHotel();
+        hotelResults = HotelWrapper.wrapList(hotels);
+        // TODO: filter
+        return FXCollections.observableArrayList(hotelResults);
     }
 
-    public ObservableList<Tours> getTours(){
-        ObservableList<Tours> tours = FXCollections.observableArrayList();
-        tours.add(new Tours("Rafting ehf.", "River rafting", "Reykjavík",3, 20000));
-        tours.add(new Tours("Paint ehf.", "Paintball", "Egilsstadir", 2,15000));
-        return tours;
+    public ObservableList<Tour> getTours(){
+        tourSearch = new TourSearchMock();
+        tourResults = tourSearch.createList();
+        // TODO: filter
+        return FXCollections.observableArrayList(tourResults);
     }
 
     // Create tables
-    TableView<Flights> tableViewFlights;
-    TableView<Hotels> tableViewHotels;
-    TableView<Tours> tableViewTours;
+    TableView<Flight> tableViewFlights;
+    TableView<HotelWrapper> tableViewHotels;
+    TableView<Tour> tableViewTours;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -258,20 +267,20 @@ public class Main extends Application {
         // FLIGHTS COLUMN SETUP
 
         // flights from column setup
-        TableColumn<Flights, String> columnFlightDepartureTime = new TableColumn<>("Departure");
-        columnFlightDepartureTime.setCellValueFactory(new PropertyValueFactory<>("flightDepartureTime"));
+        TableColumn<Flight, String> columnFlightDepartureTime = new TableColumn<>("Departure");
+        columnFlightDepartureTime.setCellValueFactory(new PropertyValueFactory<>("departureTime"));
         // flights from column setup
-        TableColumn<Flights, String> columnFlightArrivalTime = new TableColumn<>("Arrival");
-        columnFlightArrivalTime.setCellValueFactory(new PropertyValueFactory<>("flightArrivalTime"));
+        TableColumn<Flight, String> columnFlightArrivalTime = new TableColumn<>("Arrival");
+        columnFlightArrivalTime.setCellValueFactory(new PropertyValueFactory<>("arrivalTime"));
         // flights from column setup
-        TableColumn<Flights, String> columnFlightAirportFrom = new TableColumn<>("Airport dep.");
-        columnFlightAirportFrom.setCellValueFactory(new PropertyValueFactory<>("flightAirportFrom"));
+        TableColumn<Flight, String> columnFlightAirportFrom = new TableColumn<>("Airport dep.");
+        columnFlightAirportFrom.setCellValueFactory(new PropertyValueFactory<>("departureLoc"));
         // flights from column setup
-        TableColumn<Flights, String> columnFlightAirportTo = new TableColumn<>("Airport arr.");
-        columnFlightAirportTo.setCellValueFactory(new PropertyValueFactory<>("flightAirportTo"));
+        TableColumn<Flight, String> columnFlightAirportTo = new TableColumn<>("Airport arr.");
+        columnFlightAirportTo.setCellValueFactory(new PropertyValueFactory<>("arrivalLoc"));
         // flights from column setup
-        TableColumn<Flights, Integer> columnFlightPrice = new TableColumn<>("Price");
-        columnFlightPrice.setCellValueFactory(new PropertyValueFactory<>("flightPrice"));
+        TableColumn<Flight, Integer> columnFlightPrice = new TableColumn<>("Price");
+        columnFlightPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
 
         tableViewFlights = new TableView<>();
         tableViewFlights.setItems(getFlights());
@@ -282,8 +291,7 @@ public class Main extends Application {
                 columnFlightAirportTo,
                 columnFlightPrice);
 
-
-
+        
         // flights VIEW
 
         HBox mainFlights = new HBox();
@@ -302,17 +310,17 @@ public class Main extends Application {
 
 
         // hotels from column setup
-        TableColumn<Hotels, String> columnHotelName = new TableColumn<>("Hotel Name");
-        columnHotelName.setCellValueFactory(new PropertyValueFactory<>("HotelName"));
+        TableColumn<HotelWrapper, String> columnHotelName = new TableColumn<>("Hotel Name");
+        columnHotelName.setCellValueFactory(new PropertyValueFactory<>("name"));
         // hotels from column setup
-        TableColumn<Hotels, String> columnHotelChain = new TableColumn<>("Hotel Chain");
-        columnHotelChain.setCellValueFactory(new PropertyValueFactory<>("HotelChain"));
+        TableColumn<HotelWrapper, String> columnHotelChain = new TableColumn<>("Hotel Chain");
+        columnHotelChain.setCellValueFactory(new PropertyValueFactory<>("chain"));
         // hotels from column setup
-        TableColumn<Hotels, String> columnHotelLocation = new TableColumn<>("Hotel Location");
-        columnHotelLocation.setCellValueFactory(new PropertyValueFactory<>("HotelLocation"));
+        TableColumn<HotelWrapper, String> columnHotelLocation = new TableColumn<>("Hotel Location");
+        columnHotelLocation.setCellValueFactory(new PropertyValueFactory<>("city"));
         // flights from column setup
-        TableColumn<Hotels, Integer> columnHotelPrice = new TableColumn<>("Price");
-        columnHotelPrice.setCellValueFactory(new PropertyValueFactory<>("HotelPrice"));
+        TableColumn<HotelWrapper, Integer> columnHotelPrice = new TableColumn<>("Price");
+        columnHotelPrice.setCellValueFactory(new PropertyValueFactory<>("rate"));
 
 
         tableViewHotels = new TableView<>();
@@ -342,20 +350,20 @@ public class Main extends Application {
         // TOURS TABLES
 
         // Tours from column setup
-        TableColumn<Tours, String> columnTourName = new TableColumn<>("Tour Name");
-        columnTourName.setCellValueFactory(new PropertyValueFactory<>("TourName"));
+        TableColumn<Tour, String> columnTourName = new TableColumn<>("Tour Name");
+        columnTourName.setCellValueFactory(new PropertyValueFactory<>("name"));
         // Tours from column setup
-        TableColumn<Tours, String> columnTourType = new TableColumn<>("Tour Type");
-        columnTourType.setCellValueFactory(new PropertyValueFactory<>("TourType"));
+        TableColumn<Tour, String> columnTourType = new TableColumn<>("Tour Type");
+        columnTourType.setCellValueFactory(new PropertyValueFactory<>("type"));
         // Tours from column setup
-        TableColumn<Tours, String> columnTourDeparture = new TableColumn<>("Tour Departure");
-        columnTourDeparture.setCellValueFactory(new PropertyValueFactory<>("TourDeparture"));
+        TableColumn<Tour, String> columnTourDeparture = new TableColumn<>("Tour Departure");
+        columnTourDeparture.setCellValueFactory(new PropertyValueFactory<>("departureLocation"));
         // Tours from column setup
-        TableColumn<Tours, Integer> columnTourDuration = new TableColumn<>("Tour Duration");
-        columnTourDuration.setCellValueFactory(new PropertyValueFactory<>("TourDuration"));
+        TableColumn<Tour, Integer> columnTourDuration = new TableColumn<>("Tour Duration");
+        columnTourDuration.setCellValueFactory(new PropertyValueFactory<>("duration"));
         // Tours from column setup
-        TableColumn<Tours, String> columnTourPrice = new TableColumn<>("Tour Price");
-        columnTourPrice.setCellValueFactory(new PropertyValueFactory<>("TourPrice"));
+        TableColumn<Tour, String> columnTourPrice = new TableColumn<>("Tour Price");
+        columnTourPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
 
         tableViewTours = new TableView<>();
         tableViewTours.setItems(getTours());
@@ -420,6 +428,9 @@ public class Main extends Application {
 
         searchButton.setOnAction(e -> {
             System.out.println("button");
+
+            Flight flight = tableViewFlights.getSelectionModel().getSelectedItem();
+            System.out.println("id is " + flight.getArrAirportId());
         });
         /*
 

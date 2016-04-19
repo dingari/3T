@@ -1,14 +1,19 @@
 package main.mock;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public interface Hotel {
 
-    public int getPrice();
+    public String getName();
 
-    public String getLocation();
+    public String getCity();
 
-    public Date getCheckinDate();
+    public String getChain();
 
-    public Date getCheckoutDate();
+    public ArrayList<HotelRoom> getHotelRooms();
+
+    public ArrayList<Facility> getFacilities();
+
+    public ArrayList<Review> getReviews();
 }
