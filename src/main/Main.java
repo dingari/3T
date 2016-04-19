@@ -12,16 +12,31 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import main.mock.Flight;
+import main.mock.FlightSearchMock;
+import main.mock.HotelFinderMock;
+import main.mock.TourSearchMock;
+import main.service.FlightSearchService;
+import main.service.HotelFinderService;
+import main.service.TourSearchService;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class Main extends Application {
+
+    FlightSearchService flightSearch;
+    HotelFinderService hotelSearch;
+    TourSearchService tourSearch;
+    TripPlanner tripPlanner;
+
 
     // TABLE MOCK OBJECTS
     public ObservableList<Flights> getFlights(){
         ObservableList<Flights> flights = FXCollections.observableArrayList();
         flights.add(new Flights("Casablanca","Isafjordur","Isafjordur","Isafjordur",1000));
         flights.add(new Flights("Egilsstadir","Keflavik","Isafjordur","Isafjordur",8000));
+
         return flights;
     }
 
@@ -46,7 +61,6 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-
 
         // Top menu
         HBox topMenu = new HBox();
@@ -114,6 +128,8 @@ public class Main extends Application {
             System.out.println("Number of passengers: " + passengers);
         });
 
+        Button searchButton = new Button("Search");
+
         // flights menu setup
         menuFlights.getChildren().addAll(
                 flightsLocationFromLabel,
@@ -125,7 +141,8 @@ public class Main extends Application {
                 flightsDateToLabel,
                 flightsDateTo,
                 flightsPassengersLabel,
-                flightsPassengersNumber);
+                flightsPassengersNumber,
+                searchButton);
 
         // FLIGHTS COLUMN SETUP
 
@@ -145,7 +162,6 @@ public class Main extends Application {
         TableColumn<Flights, Integer> columnFlightPrice = new TableColumn<>("Price");
         columnFlightPrice.setCellValueFactory(new PropertyValueFactory<>("flightPrice"));
 
-
         tableViewFlights = new TableView<>();
         tableViewFlights.setItems(getFlights());
         tableViewFlights.getColumns().addAll(
@@ -154,6 +170,8 @@ public class Main extends Application {
                 columnFlightAirportFrom,
                 columnFlightAirportTo,
                 columnFlightPrice);
+
+        tableViewFlights.getSe
 
         // flights VIEW
 
@@ -288,7 +306,16 @@ public class Main extends Application {
             borderPane.setCenter(mainCart);
         });
 
+        searchButton.setOnAction(e -> {
+            System.out.println("button");
+        });
+
         //setup
+
+        flightsLocationFrom.setMaxWidth(Double.MAX_VALUE);
+        flightsLocationTo.setMaxWidth(Double.MAX_VALUE);
+        flightsPassengersNumber.setMaxWidth(Double.MAX_VALUE);
+        searchButton.setMaxWidth(Double.MAX_VALUE);
 
         primaryStage.setTitle("Trip Planner 3000");
 
