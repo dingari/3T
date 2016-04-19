@@ -77,6 +77,75 @@ public class Main extends Application {
                                                 #
                                                 #
         */
+        CheckBox cb1 = new CheckBox();
+        CheckBox cb2 = new CheckBox();
+        CheckBox cb3 = new CheckBox();
+        CheckBox cb4 = new CheckBox();
+        CheckBox cb5 = new CheckBox();
+        CheckBox cb6 = new CheckBox();
+        CheckBox cb7 = new CheckBox();
+        CheckBox cb8 = new CheckBox();
+        CheckBox cb9 = new CheckBox();
+        CheckBox cb10 = new CheckBox();
+        CheckBox cb11 = new CheckBox();
+        CheckBox cb12 = new CheckBox();
+        CheckBox cb13 = new CheckBox();
+
+        cb1.setText("Room Service");
+        cb1.setSelected(true);
+        cb2.setText("Bar");
+        cb2.setSelected(false);
+        cb3.setText("Breakfast");
+        cb3.setSelected(false);
+        cb4.setText("Gym");
+        cb4.setSelected(false);
+        cb5.setText("Restaurant");
+        cb5.setSelected(false);
+        cb6.setText("Special events");
+        cb6.setSelected(false);
+        cb7.setText("Pool");
+        cb7.setSelected(false);
+        cb8.setText("Wi-Fi");
+        cb8.setSelected(false);
+        cb9.setText("Luggage Storage");
+        cb9.setSelected(false);
+        cb10.setText("Handicap access");
+        cb10.setSelected(false);
+        cb11.setText("Garage");
+        cb11.setSelected(false);
+        cb12.setText("Computers");
+        cb12.setSelected(false);
+        cb13.setText("Spa");
+        cb13.setSelected(false);
+
+        final ToggleGroup groupH = new ToggleGroup();
+
+        RadioButton rb1 = new RadioButton("All hotels");
+        rb1.setToggleGroup(groupH);
+        rb1.setSelected(true);
+
+        RadioButton rb2 = new RadioButton("Name");
+        rb2.setToggleGroup(groupH);
+
+        RadioButton rb3 = new RadioButton("Location");
+        rb3.setToggleGroup(groupH);
+
+        RadioButton rb4 = new RadioButton("Hotel chain");
+        rb4.setToggleGroup(groupH);
+
+        RadioButton rb5 = new RadioButton("Substring");
+        rb5.setToggleGroup(groupH);
+
+        VBox menuHotels = new VBox();
+
+        DatePicker checkInDate = new DatePicker();
+        DatePicker checkOutDate = new DatePicker();
+
+        Label labelSH = new Label("Search string:");
+        TextField tFSH = new TextField ();
+        //HBox hb = new HBox();
+        //hb.getChildren().addAll(label1, textField);
+        //hb.setSpacing(10);
 
         // flights left search menu
         VBox menuFlights = new VBox();
@@ -130,6 +199,9 @@ public class Main extends Application {
 
         Button searchButton = new Button("Search");
 
+        Button searchHButton = new Button("Search");
+        Button bookHButton = new Button("Book selected room");
+
         // flights menu setup
         menuFlights.getChildren().addAll(
                 flightsLocationFromLabel,
@@ -143,6 +215,36 @@ public class Main extends Application {
                 flightsPassengersLabel,
                 flightsPassengersNumber,
                 searchButton);
+
+        menuHotels.getChildren().addAll(
+                checkInDate,
+                checkOutDate,
+                labelSH,
+                tFSH,
+                rb1,
+                rb2,
+                rb3,
+                rb4,
+                rb5,
+                cb1,
+                cb2,
+                cb3,
+                cb4,
+                cb5,
+                cb6,
+                cb7,
+                cb8,
+                cb9,
+                cb10,
+                cb11,
+                cb12,
+                cb13,
+                searchHButton,
+                bookHButton
+        );
+
+
+
 
         // FLIGHTS COLUMN SETUP
 
@@ -171,7 +273,7 @@ public class Main extends Application {
                 columnFlightAirportTo,
                 columnFlightPrice);
 
-        tableViewFlights.getSe
+
 
         // flights VIEW
 
@@ -185,9 +287,9 @@ public class Main extends Application {
                                                 #
                                                 #
         */
-        VBox menuHotels = new VBox();
-        Label label2 = new Label("HOTELS");
-        menuHotels.getChildren().addAll(label2);
+       // VBox menuHotels = new VBox();
+       // Label label2 = new Label("HOTELS");
+       // menuHotels.getChildren().addAll(label2);
 
 
         // hotels from column setup
@@ -292,9 +394,10 @@ public class Main extends Application {
         buttonFlights.setOnAction(e -> {
             // borderPane.setLeft(menuFlights);
             borderPane.setCenter(mainFlights);
+            borderPane.setLeft(menuFlights);
         });
         buttonHotels.setOnAction(e -> {
-            // borderPane.setLeft(menuHotels);
+            borderPane.setLeft(menuHotels);
             borderPane.setCenter(mainHotels);
         });
         buttonTours.setOnAction(e -> {
