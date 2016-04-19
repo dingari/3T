@@ -36,6 +36,10 @@ public class TripPlanner {
 	private HotelFinderService hotelSearch;
 	private TourSearchService tourSearch;
 
+	public TripPlanner() {
+		initServices();
+	}
+
 	public TripPlanner(String depLocation, String destLocation, Date depTime, Date returnTime, int numPeople,
 					   int priceLower, int priceHigher, boolean oneWay, String[] excludedAirlines,
 					   String[] excludedHotels, int tourDurationLower, int tourDurationHigher, List<String> tourType,
@@ -57,9 +61,7 @@ public class TripPlanner {
 		this.minTourRating = minTourRating;
 		this.tourHotelPickup = tourHotelPickup;
 
-		flightSearch = new FlightSearchMock();
-		hotelSearch = new HotelFinderMock(depTime.toString(), returnTime.toString());
-		tourSearch = new TourSearchMock();
+		initServices();
 	}
 
 	public TripPlanner(String depLocation, String destLocation, Date depTime, Date returnTime, int numPeople,
@@ -74,6 +76,10 @@ public class TripPlanner {
 		this.priceHigher = priceHigher;
 		this.tourDurationHigher = tourDurationHigher;
 
+		initServices();
+	}
+
+	private void initServices() {
 		flightSearch = new FlightSearchMock();
 		hotelSearch = new HotelFinderMock(depTime.toString(), returnTime.toString());
 		tourSearch = new TourSearchMock();
