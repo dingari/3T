@@ -128,7 +128,7 @@ public class TripPlanner {
 			Tour tour = tourList.get(tourIndex);
 
 			// Finally add our findings to the list of combos
-			combos.add(new TripCombo(depFlight, returnFlight, hotel, tour));
+			combos.add(new TripCombo(depFlight, returnFlight, hotel, tour, numPeople));
 		}
 
 		return combos;
@@ -142,10 +142,11 @@ public class TripPlanner {
 
 		List<Hotel> hotelList = hotelSearch.getFreeRoomsFromHotelLocation(destLocation);
 		Hotel hotelCheapest = findCheapestHotel(hotelList);
+		int roomID = 0; // TODO: Get a room ID somehow
 
 		Tour tourCheapest = findCheapestTour();
 
-		return new TripCombo(depCheapest, returnCheapest, hotelCheapest, tourCheapest);
+		return new TripCombo(depCheapest, returnCheapest, hotelCheapest, tourCheapest, numPeople);
 	}
 
 	private ArrayList<Flight> searchOutboundFlights() {

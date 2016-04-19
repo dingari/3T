@@ -11,11 +11,14 @@ public class TripCombo {
     private Hotel hotel;
     private Tour tour;
 
-    public TripCombo(Flight oubboundFlight, Flight inboundFlight, Hotel hotel, Tour tour) {
+    private int numPeople;
+
+    public TripCombo(Flight oubboundFlight, Flight inboundFlight, Hotel hotel, Tour tour, int numPeople) {
         this.outboundFlight = oubboundFlight;
         this.inboundFlight = inboundFlight;
         this.hotel = hotel;
         this.tour = tour;
+        this.numPeople = numPeople;
     }
 
     public int getPrice() {
@@ -25,6 +28,14 @@ public class TripCombo {
         int tourPrice = (tour == null) ? 0 : tour.getPrice();
 
         return outboundFlightPrice + inboundFlightPrice + hotelPrice + tourPrice;
+    }
+
+    public int getNumPeople() {
+        return numPeople;
+    }
+
+    public void setNumPeople(int numPeople) {
+        this.numPeople = numPeople;
     }
 
     public Flight getOutboundFlight() {
