@@ -12,6 +12,15 @@ public class TourSearchMock implements TourSearchService{
 
     }
 
+    @Override
+    public ArrayList<Tour> createList() {
+        ArrayList<Tour> tours = new ArrayList<>();
+        tours.add(new TourMock());
+        tours.add(new TourMock());
+        tours.add(new TourMock());
+
+        return tours;
+    }
 
     @Override
     public ArrayList<Tour> createList(Integer priceLower, Integer priceHigher, Integer durationLower,

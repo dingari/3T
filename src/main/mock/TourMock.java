@@ -8,23 +8,29 @@ public class TourMock implements Tour {
 
     }
 
+
+    @Override
+    public String getName() {
+        return (Math.random() < 0.5) ? "foo" : "bar";
+    }
+
+    @Override
+    public String getType() {
+        return (Math.random() < 0.5) ? "adventure" : "historic";
+    }
+
+    @Override
+    public String getDepartureLocation() {
+        return (Math.random() < 0.5) ? "Reykjavik" : "Geysir";
+    }
+
+    @Override
+    public int getDuration() {
+        return (int) (Math.random()*15);
+    }
+
     @Override
     public int getPrice() {
-        return (int) (Math.random()*100);
-    }
-
-    @Override
-    public String getLocation() {
-        return "";
-    }
-
-    @Override
-    public Date getStartDate() {
-        return new Date();
-    }
-
-    @Override
-    public Date getEndDate() {
-        return new Date();
+        return (int) (Math.random()*1000);
     }
 }

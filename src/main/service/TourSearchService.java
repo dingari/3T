@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface TourSearchService {
 
+    public ArrayList<Tour> createList();
+
     public ArrayList<Tour> createList(Integer priceLower, Integer priceHigher, Integer durationLower, Integer durationHigher,
                                       Date dateLower, Date dateHigher, Integer minAvailableSeats, String destination, String departure,
                                       String type, Integer rating, boolean hotelPickup, String name);

@@ -33,7 +33,7 @@ public class BookingController {
 
         // Book hotel room
         int roomID = 0; // TODO: Get a room ID somehow
-        hotelBookingService.bookHotelRoom(combo.getHotel(), roomID);
+        hotelBookingService.bookHotelRoom(combo.getHotel().getHotel(), roomID);
 
         // Book tour
         tourBookingService.bookTour(combo.getTour(), numPeople);

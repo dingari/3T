@@ -12,17 +12,17 @@ public class HotelMock implements Hotel {
 
     @Override
     public String getName() {
-        return "hotel foo";
+        return (Math.random() < 0.5) ? "hotel foo" : "hotel bar";
     }
 
     @Override
     public String getCity() {
-        return "reykjavik";
+        return (Math.random() < 0.5) ? "reykjavik" : "akureyri";
     }
 
     @Override
     public String getChain() {
-        return "radison";
+        return (Math.random() < 0.5) ? "radison" : "grand";
     }
 
     @Override
