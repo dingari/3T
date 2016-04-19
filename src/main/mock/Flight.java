@@ -6,7 +6,24 @@ public interface Flight {
 
     public int getPrice();
 
-    public Date getDepartureDate();
+    public String getFlightNumber();
 
-    public Date getReturnDate();
+    public String getDepartureLoc();
+
+    public String getDepartureDate();
+
+    public String getReturnDate();
+
+    public String getDepartureTime();
+
+    public String getDepAirportId();
+
+    public String getArrivalLoc();
+
+    public String getArrivalDate();
+
+    public String getArrivalTime();
+
+    public String getArrAirportId();
+
 }

@@ -1,4 +1,4 @@
-package test;
+/*package test;
 
 import main.TripCombo;
 import main.TripPlanner;
@@ -26,7 +26,7 @@ public class TripPlannerTest {
         int tourDuration = 3;
         List<String> tourType = new ArrayList<>();
         tourType.add("foobar");
-        
+
         tp = new TripPlanner(depLoc, destLoc, depTime, returnTime, numPeople, priceLower, priceHigher,
                 oneWay, null, null, 0, tourDuration, tourType, 3, false);
     }
@@ -92,4 +92,4 @@ public class TripPlannerTest {
             assertTrue(tp.getDestLocation().equals(combo.getHotel().getLocation()));
         }
     }
-}
+} */

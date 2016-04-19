@@ -1,5 +1,7 @@
 package main.mock;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class HotelMock implements Hotel {
@@ -9,22 +11,37 @@ public class HotelMock implements Hotel {
     }
 
     @Override
-    public int getPrice() {
-        return (int) (Math.random()*100);
+    public String getName() {
+        return "hotel foo";
     }
 
     @Override
-    public String getLocation() {
-        return "";
+    public String getCity() {
+        return "reykjavik";
     }
 
     @Override
-    public Date getCheckinDate() {
-        return new Date();
+    public String getChain() {
+        return "radison";
     }
 
     @Override
-    public Date getCheckoutDate() {
-        return new Date();
+    public ArrayList<HotelRoom> getHotelRooms() {
+        ArrayList<HotelRoom> list = new ArrayList<HotelRoom>();
+        list.add(new HotelRoomMock());
+        list.add(new HotelRoomMock());
+        list.add(new HotelRoomMock());
+
+        return list;
+    }
+
+    @Override
+    public ArrayList<Facility> getFacilities() {
+        return null;
+    }
+
+    @Override
+    public ArrayList<Review> getReviews() {
+        return null;
     }
 }
