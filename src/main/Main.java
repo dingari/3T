@@ -8,6 +8,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -64,10 +66,17 @@ public class Main extends Application {
 
         // Top menu
         HBox topMenu = new HBox();
-        Button buttonFlights = new Button("Flight search");
-        Button buttonHotels = new Button("Hotel search");
-        Button buttonTours = new Button("Tour search");
-        Button buttonCart = new Button("View cart");
+
+        Image imageFlights = new Image(getClass().getResourceAsStream("iflights.png"));
+        Image imageHotels = new Image(getClass().getResourceAsStream("ihotels.png"));
+        Image imageTours = new Image(getClass().getResourceAsStream("itours.png"));
+        Image imageCart = new Image(getClass().getResourceAsStream("icart.png"));
+        Image imageSearch = new Image(getClass().getResourceAsStream("isearch.png"));
+
+        Button buttonFlights = new Button("Flight search",new ImageView(imageFlights));
+        Button buttonHotels = new Button("Hotel search",new ImageView(imageHotels));
+        Button buttonTours = new Button("Tour search", new ImageView(imageTours));
+        Button buttonCart = new Button("View cart", new ImageView(imageCart));
         topMenu.getChildren().addAll(buttonFlights,buttonHotels,buttonTours,buttonCart);
 
         /*
@@ -197,7 +206,7 @@ public class Main extends Application {
             System.out.println("Number of passengers: " + passengers);
         });
 
-        Button searchButton = new Button("Search");
+        Button searchButton = new Button("Search", new ImageView(imageSearch));
 
         Button searchHButton = new Button("Search");
         Button bookHButton = new Button("Book selected room");
@@ -412,6 +421,44 @@ public class Main extends Application {
         searchButton.setOnAction(e -> {
             System.out.println("button");
         });
+        /*
+
+
+                         Tooltips
+
+
+        */
+
+
+        Tooltip.install(buttonCart, new Tooltip("View a list of items you have added to the cart"));
+        Tooltip.install(buttonFlights, new Tooltip("Search for flights matching your criteria"));
+        Tooltip.install(buttonHotels, new Tooltip("Search for hotels matching your criteria"));
+        Tooltip.install(buttonTours, new Tooltip("Search for tours matching your criteria"));
+
+
+        /*
+
+
+                         Style
+
+
+        */
+        mainFlights.setId("main");
+        mainHotels.setId("main");
+        mainTours.setId("main");
+        mainCart.setId("main");
+
+        topMenu.setId("topMenu");
+
+        buttonCart.setId("menuButton");
+        buttonFlights.setId("menuButton");
+        buttonHotels.setId("menuButton");
+        buttonTours.setId("menuButton");
+
+        menuFlights.setId("leftMenu");
+
+
+
 
         //setup
 
@@ -421,7 +468,13 @@ public class Main extends Application {
         searchButton.setMaxWidth(Double.MAX_VALUE);
 
         primaryStage.setTitle("Trip Planner 3000");
-        primaryStage.setScene(new Scene(borderPane, 800, 600));
+
+        Image icon = new Image(getClass().getResourceAsStream("icon.png"));
+        primaryStage.getIcons().add(icon);
+
+        Scene scene = new Scene(borderPane, 800, 600);
+        primaryStage.setScene(scene);
+        scene.getStylesheets().add("main/style.css");
         primaryStage.show();
     }
 
