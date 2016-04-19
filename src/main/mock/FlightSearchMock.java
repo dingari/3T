@@ -8,17 +8,28 @@ import java.util.List;
 
 public class FlightSearchMock implements FlightSearchService {
 
-    public FlightSearchMock() {
+    @Override
+    public ArrayList<Flight> searchFlightByCriteria(String departureDate, String departureLocation, String arrivalLocation,
+                                               int passengerQty) {
 
+        ArrayList<Flight> list = new ArrayList<>();
+        list.add(new FlightMock());
+        list.add(new FlightMock());
+        list.add(new FlightMock());
+
+        return list;
     }
 
     @Override
-    public List<String> getFlightByCriteria(Date timeFrom, Date timeTo, String fromLocation, String toLocation, int travelerQty) {
-        ArrayList<String> flights = new ArrayList<String>();
+    public ArrayList<Flight> filterFlightList(ArrayList<Flight> flightListToFilter, String timeFrom, String timeTo,
+                                         boolean wantSagaSeats, boolean wantWifi, boolean priceDescending,
+                                         int maxPrice) {
 
-        flights.add("WW555");
-        flights.add("IS252");
+        ArrayList<Flight> list = new ArrayList<>();
+        list.add(new FlightMock());
+        list.add(new FlightMock());
+        list.add(new FlightMock());
 
-        return flights;
+        return list;
     }
 }

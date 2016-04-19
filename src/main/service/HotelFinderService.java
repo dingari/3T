@@ -4,15 +4,25 @@ import main.mock.Facility;
 import main.mock.Hotel;
 import main.mock.Location;
 
+import java.util.ArrayList;
+
 public interface HotelFinderService {
 
-    public Hotel[] getAllHotels();
+    public ArrayList<Hotel> getFreeRoomsFromHotel(String hotelName);
 
-    public Hotel[] limitToChain(Hotel[] hotels, String chain);
+    public ArrayList<Hotel> getFreeRoomsFromHotelLocation(String hotelLocation);
 
-    public Hotel[] limitToFacility(Hotel[] hotels, Facility facility);
+    public ArrayList<Hotel> getFreeRoomsFromHotelChain(String hotelChain);
 
-    public Hotel[] limitToLocation(Hotel[] hotels, Location location);
+    public ArrayList<Hotel> getFreeRoomsFromAnyHotel();
 
-    public Hotel[] limitToNoStars(Hotel[] hotels, int stars);
+    public ArrayList<Hotel> getFreeHotelsFromAnyHotelSubString(String substring);
+
+    public void book(Hotel hotel, int roomId);
+
+    public void unbook(Hotel hotel, int BookID);
+
+    public ArrayList<Hotel> getHotelWithFacilities(int[] facilityID);
+
+    public ArrayList<Hotel> filterHotelWithFacilities(ArrayList<Hotel> hotels, int[] facilityId);
 }

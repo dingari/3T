@@ -2,37 +2,61 @@ package main.mock;
 
 import main.service.HotelFinderService;
 
+import java.util.ArrayList;
+
 public class HotelFinderMock implements HotelFinderService {
 
-    public HotelFinderMock() {
+    public HotelFinderMock(String newCheckInDate, String newCheckoutDate) {
 
     }
 
-
     @Override
-    public Hotel[] getAllHotels() {
-        Hotel[] hotels = new Hotel[1];
-        hotels[1] = new HotelMock();
-        return hotels;
+    public ArrayList<Hotel> getFreeRoomsFromHotel(String hotelName) {
+        return null;
     }
 
     @Override
-    public Hotel[] limitToChain(Hotel[] hotels, String chain) {
-        return hotels;
+    public ArrayList<Hotel> getFreeRoomsFromHotelLocation(String hotelLocation) {
+        ArrayList<Hotel> list = new ArrayList<>();
+        list.add(new HotelMock());
+        list.add(new HotelMock());
+        list.add(new HotelMock());
+
+        return list;
     }
 
     @Override
-    public Hotel[] limitToFacility(Hotel[] hotels, Facility facility) {
-        return hotels;
+    public ArrayList<Hotel> getFreeRoomsFromHotelChain(String hotelChain) {
+        return null;
     }
 
     @Override
-    public Hotel[] limitToLocation(Hotel[] hotels, Location location) {
-        return hotels;
+    public ArrayList<Hotel> getFreeRoomsFromAnyHotel() {
+        return null;
     }
 
     @Override
-    public Hotel[] limitToNoStars(Hotel[] hotels, int stars) {
-        return hotels;
+    public ArrayList<Hotel> getFreeHotelsFromAnyHotelSubString(String substring) {
+        return null;
+    }
+
+    @Override
+    public void book(Hotel hotel, int roomId) {
+
+    }
+
+    @Override
+    public void unbook(Hotel hotel, int BookID) {
+
+    }
+
+    @Override
+    public ArrayList<Hotel> getHotelWithFacilities(int[] facilityID) {
+        return null;
+    }
+
+    @Override
+    public ArrayList<Hotel> filterHotelWithFacilities(ArrayList<Hotel> hotels, int[] facilityId) {
+        return null;
     }
 }

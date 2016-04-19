@@ -5,6 +5,7 @@ import main.TripPlanner;
 import org.junit.*;
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -23,8 +24,11 @@ public class TripPlannerTest {
         int priceLower = 50000;
         int priceHigher = 200000;
         int tourDuration = 3;
+        List<String> tourType = new ArrayList<>();
+        tourType.add("foobar");
         
-        tp = new TripPlanner(depLoc, destLoc, depTime, returnTime, numPeople, priceLower, priceHigher, tourDuration);
+        tp = new TripPlanner(depLoc, destLoc, depTime, returnTime, numPeople, priceLower, priceHigher,
+                oneWay, null, null, 0, tourDuration, tourType, 3, false);
     }
 
     @After
@@ -34,7 +38,7 @@ public class TripPlannerTest {
 
     @Test
     public void testPriceSum() {
-        List<TripCombo> combos = tp.suggestCombos();
+        List<TripCombo> combos = tp.suggestCombos(10);
 
         for(TripCombo combo: combos) {
             assertTrue(combo.getPrice() < tp.getPriceHigher());
@@ -43,17 +47,17 @@ public class TripPlannerTest {
 
     @Test
     public void testDates() {
-        List<TripCombo> combos = tp.suggestCombos();
+        List<TripCombo> combos = tp.suggestCombos(10);
 
         for(TripCombo combo: combos) {
-            assertTrue(tp.getDepTime().compareTo(combo.getFlight().getDepartureDate()) <= 0);
-            assertTrue(tp.getReturnTime().compareTo(combo.getFlight().getReturnDate()) >= 0);
+            assertTrue(tp.getDepTime().compareTo(combo.getOutboundFlight().getDepartureDate()) <= 0);
+            assertTrue(tp.getReturnTime().compareTo(combo.getInboundFlight().getDepartureDate()) >= 0);
         }
     }
 
     @Test
     public void testHotelDates() {
-        List<TripCombo> combos = tp.suggestCombos();
+        List<TripCombo> combos = tp.suggestCombos(10);
 
         for(TripCombo combo: combos) {
             assertTrue(tp.getDepTime().compareTo(combo.getHotel().getCheckinDate()) == 0);
@@ -63,7 +67,7 @@ public class TripPlannerTest {
 
     @Test
     public void testTourDates() {
-        List<TripCombo> combos = tp.suggestCombos();
+        List<TripCombo> combos = tp.suggestCombos(10);
 
         for(TripCombo combo: combos) {
             assertTrue(tp.getDepTime().compareTo(combo.getTour().getStartDate()) <= 0);
@@ -73,7 +77,7 @@ public class TripPlannerTest {
 
     @Test
     public void testHotelLocation() {
-        List<TripCombo> combos = tp.suggestCombos();
+        List<TripCombo> combos = tp.suggestCombos(10);
 
         for(TripCombo combo: combos) {
             assertTrue(tp.getDestLocation().equals(combo.getTour().getLocation()));
@@ -82,7 +86,7 @@ public class TripPlannerTest {
 
     @Test
     public void testTourLocation() {
-        List<TripCombo> combos = tp.suggestCombos();
+        List<TripCombo> combos = tp.suggestCombos(10);
 
         for(TripCombo combo: combos) {
             assertTrue(tp.getDestLocation().equals(combo.getHotel().getLocation()));

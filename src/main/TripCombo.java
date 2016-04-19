@@ -6,30 +6,41 @@ import main.mock.Tour;
 
 public class TripCombo {
 
-    private Flight flight;
+    private Flight outboundFlight;
+    private Flight inboundFlight;
     private Hotel hotel;
     private Tour tour;
 
-    public TripCombo(Flight flight, Hotel hotel, Tour tour) {
-        this.flight = flight;
+    public TripCombo(Flight oubboundFlight, Flight inboundFlight, Hotel hotel, Tour tour) {
+        this.outboundFlight = oubboundFlight;
+        this.inboundFlight = inboundFlight;
         this.hotel = hotel;
         this.tour = tour;
     }
 
     public int getPrice() {
-        int flightPrice = (flight == null) ? 0 : flight.getPrice();
+        int outboundFlightPrice = (outboundFlight == null) ? 0 : outboundFlight.getPrice();
+        int inboundFlightPrice = (inboundFlight == null) ? 0 : inboundFlight.getPrice();
         int hotelPrice = (hotel == null) ? 0 : hotel.getPrice();
         int tourPrice = (tour == null) ? 0 : tour.getPrice();
 
-        return flightPrice + hotelPrice + tourPrice;
+        return outboundFlightPrice + inboundFlightPrice + hotelPrice + tourPrice;
     }
 
-    public Flight getFlight() {
-        return flight;
+    public Flight getOutboundFlight() {
+        return outboundFlight;
     }
 
-    public void setFlight(Flight flight) {
-        this.flight = flight;
+    public void setOutboundFlight(Flight outboundFlight) {
+        this.outboundFlight = outboundFlight;
+    }
+
+    public Flight getInboundFlight() {
+        return inboundFlight;
+    }
+
+    public void setInboundFlight(Flight inboundFlight) {
+        this.inboundFlight = inboundFlight;
     }
 
     public Hotel getHotel() {

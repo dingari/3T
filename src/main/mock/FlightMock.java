@@ -3,9 +3,10 @@ package main.mock;
 import java.util.Date;
 
 public class FlightMock implements Flight {
+
     @Override
     public int getPrice() {
-        return 0;
+        return (int) (Math.random()*100);
     }
 
     @Override

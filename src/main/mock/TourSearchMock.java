@@ -14,31 +14,21 @@ public class TourSearchMock implements TourSearchService{
 
 
     @Override
-    public List<Tour> getTourList(int priceLow, int priceHigh, int duration, Date dateLower, Date dateUpper, List<String> type, int availSeats, String tourName) {
-        return null;
+    public ArrayList<Tour> createList(Integer priceLower, Integer priceHigher, Integer durationLower,
+                                      Integer durationHigher, Date dateLower, Date dateHigher,
+                                      Integer minAvailableSeats, String destination, String departure, String type,
+                                      Integer rating, boolean hotelPickup, String name) {
+
+        ArrayList<Tour> list = new ArrayList<>();
+        list.add(new TourMock());
+        list.add(new TourMock());
+        list.add(new TourMock());
+
+        return list;
     }
 
     @Override
-    public List<Review> getTourReviews(String tourName) {
-        ArrayList<Review> reviews = new ArrayList<Review>();
-        reviews.add(new ReviewMock());
-        return reviews;
-    }
-
-    @Override
-    public List<Review> getGuideReview(String guideName) {
-        ArrayList<Review> reviews = new ArrayList<Review>();
-        reviews.add(new ReviewMock());
-        return reviews;
-    }
-
-    @Override
-    public void updateSeats(String tourName, int decrease) {
-
-    }
-
-    @Override
-    public void updateRating(String tourName, float rated) {
+    public void bookTourSeats(Tour tour, int bookedSeats) {
 
     }
 }

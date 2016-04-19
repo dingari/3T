@@ -10,7 +10,7 @@ public class TourMock implements Tour {
 
     @Override
     public int getPrice() {
-        return 0;
+        return (int) (Math.random()*100);
     }
 
     @Override
