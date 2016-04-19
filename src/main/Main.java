@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -34,13 +35,21 @@ public class Main extends Application {
     List<HotelWrapper> hotelResults;
     List<Tour> tourResults;
 
+    // General search parameters
     String departureDate;
     String returnDate;
     String departLocation;
     String destLocation;
     int numPeople;
 
+    // Flight specific parameters
+    boolean flightWifi;
 
+    // Hotel specific parameters
+    // TODO: add this
+
+    // Tour specific parameters
+    // TODO: add this
 
     // TABLE MOCK OBJECTS
     public ObservableList<Flight> getFlights(){
@@ -215,6 +224,9 @@ public class Main extends Application {
             System.out.println("Number of passengers: " + passengers);
         });
 
+        // Flight luxuries
+        CheckBox rbWifi = new CheckBox("WiFi");
+
         Button searchButton = new Button("Search", new ImageView(imageSearch));
 
         Button searchHButton = new Button("Search");
@@ -232,6 +244,7 @@ public class Main extends Application {
                 flightsDateTo,
                 flightsPassengersLabel,
                 flightsPassengersNumber,
+                rbWifi,
                 searchButton);
 
         menuHotels.getChildren().addAll(
@@ -291,7 +304,7 @@ public class Main extends Application {
                 columnFlightAirportTo,
                 columnFlightPrice);
 
-        
+
         // flights VIEW
 
         HBox mainFlights = new HBox();
