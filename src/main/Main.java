@@ -1,4 +1,4 @@
-package sample;
+package main;
 
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -172,7 +172,7 @@ public class Main extends Application {
         menuHotels.getChildren().addAll(label2);
 
 
-         // hotels from column setup
+        // hotels from column setup
         TableColumn<Hotels, String> columnHotelName = new TableColumn<>("Hotel Name");
         columnHotelName.setCellValueFactory(new PropertyValueFactory<>("HotelName"));
         // hotels from column setup
