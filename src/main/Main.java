@@ -17,7 +17,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import main.controller.SearchController;
 import main.flightsearch.models.Flight;
-import main.mock.*;
+import main.toursearch.model.Tour;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -450,35 +450,51 @@ public class Main extends Application {
 
         Label tourDepartureLabel = new Label("Departure");
         ComboBox<String> tourDeparture = new ComboBox<String>();
-        tourDeparture.getItems().addAll("Reykjavik","Akureyri","Egilsstadir","Isafjordur","Casablanca");
+        tourDeparture.getItems().addAll("Reykjavik","Husavik","Vik","Downtown Reykjavik");
         tourDeparture.setValue("Reykjavik");
         tourDeparture.setMaxWidth(Double.MAX_VALUE);
+        tourDeparture.setOnAction(e -> searchController.setDepartLocation(tourDeparture.getValue()));
 
         Label tourDestinationLabel = new Label("Destination");
         ComboBox<String> tourDestination = new ComboBox<String>();
-        tourDestination.getItems().addAll("Reykjavik","Akureyri","Egilsstadir","Isafjordur","Casablanca");
+        tourDestination.getItems().addAll("The Ocean","Thingvellir","Vatnajokull","Depends on weather","Silfra", "Reykjavik sights", "Geysir", "Blue lagoon");
         tourDestination.setValue("Reykjavik");
         tourDestination.setMaxWidth(Double.MAX_VALUE);
+        tourDestination.setOnAction(e -> searchController.setDestLocation(tourDestination.getValue()));
 
-        Label tourDurationLabel = new Label("Tour duration");
+        Label tourDurationLabel = new Label("Duration");
         TextField tourDurationLower = new TextField();
+        tourDurationLower.setPromptText("Minimum duration");
         TextField tourDurationHigher = new TextField();
+        tourDurationHigher.setPromptText("Maximum duration");
 
         Label tourTypeLabel = new Label("Type");
         ComboBox<String> tourType = new ComboBox<>();
-        tourType.getItems().addAll("Adventure", "Historic", "Walking");
+        tourType.getItems().addAll("Adventure", "Northern Lights", "Reykjavik", "Golden Circle", "Nature");
         tourType.setValue("Adventure");
         tourType.setMaxWidth(Double.MAX_VALUE);
+        tourType.setOnAction(e -> searchController.setTourType(tourType.getValue()));
 
-        TextField tourRating = new TextField();
-        tourRating.setPromptText("Rating");
+        Label tourRatingLabel = new Label("Rating");
+
+        ComboBox<Integer> tourRating = new ComboBox<>();
+        tourRating.getItems().addAll(0, 1, 2, 3, 4, 5);
         tourRating.setMaxWidth(Double.MAX_VALUE);
+        tourRating.setValue(0);
+        tourRating.setOnAction(e -> searchController.setTourRating(tourRating.getValue()));
+
+        Label tourPriceLabel = new Label("Price");
+        TextField tourPriceLower = new TextField();
+        tourPriceLower.setPromptText("Minimum price");
+
+        TextField tourPriceHigher = new TextField();
+        tourPriceHigher.setPromptText("Maximum price");
 
         CheckBox tourHotelPickup = new CheckBox("Hotel pickup");
+        tourHotelPickup.setOnAction(e -> searchController.setTourHotelPickup(tourHotelPickup.isSelected()));
 
-        ComboBox<String> tourName = new ComboBox<>();
-        tourName.getItems().addAll("asdf", "fdas", "sadf");
-        tourName.setValue("asdf");
+        TextField tourName = new TextField();
+        tourName.setPromptText("Tour name");
         tourName.setMaxWidth(Double.MAX_VALUE);
 
         Button tourSearchButton = new Button("Search", new ImageView(imageSearch));
@@ -493,11 +509,15 @@ public class Main extends Application {
                 tourDeparture,
                 tourDestinationLabel,
                 tourDestination,
+                tourPriceLabel,
+                tourPriceLower,
+                tourPriceHigher,
                 tourDurationLabel,
                 tourDurationLower,
                 tourDurationHigher,
                 tourTypeLabel,
                 tourType,
+                tourRatingLabel,
                 tourRating,
                 tourHotelPickup,
                 tourName,
@@ -592,11 +612,36 @@ public class Main extends Application {
 
         comboSearchButton.setOnAction(e -> searchAll());
 
-        searchButtonFlight.setOnAction(e -> searchAll());
+        searchButtonFlight.setOnAction(e -> searchController.searchFlights());
 
-        searchHButton.setOnAction(e -> searchAll());
+        searchHButton.setOnAction(e -> searchController.searchHotels());
 
-        tourSearchButton.setOnAction(e -> searchAll());
+        tourSearchButton.setOnAction(e -> {
+            int priceLower = 0;
+            int priceHigher = Integer.MAX_VALUE;
+            int durationLower = 0;
+            int durationHigher = Integer.MAX_VALUE;
+
+            try { priceLower = Integer.parseInt(tourPriceLower.getText()); }
+            catch (NumberFormatException err) { System.out.println("Error: " + err.getMessage()); }
+
+            try { priceHigher = Integer.parseInt(tourPriceHigher.getText()); }
+            catch (NumberFormatException err) { System.out.println("Error: " + err.getMessage()); }
+
+            try { durationLower = Integer.parseInt(tourDurationLower.getText()); }
+            catch (NumberFormatException err) { System.out.println("Error: " + err.getMessage()); }
+
+            try { durationHigher = Integer.parseInt(tourDurationHigher.getText()); }
+            catch (NumberFormatException err) { System.out.println("Error: " + err.getMessage()); }
+
+            searchController.setTourPriceLower(priceLower);
+            searchController.setTourPriceHigher(priceHigher);
+            searchController.setTourDurationLower(durationLower);
+            searchController.setTourDurationHigher(durationHigher);
+            searchController.setTourName(tourName.getText());
+
+            tableViewTours.setItems(getTours());
+        });
 
         /*
 

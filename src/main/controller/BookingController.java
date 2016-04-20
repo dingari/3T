@@ -6,8 +6,6 @@ import main.TourBooking;
 import main.TripCombo;
 import main.flightsearch.controllers.BookingManager;
 import main.hotelsearch.Booker;
-import main.mock.TourBookingMock;
-import main.service.TourBookingService;
 
 import java.sql.Date;
 import java.text.DateFormat;
@@ -18,12 +16,12 @@ public class BookingController {
 
     BookingManager flightBookingService;
     Booker hotelBookingService;
-    TourBookingService tourBookingService;
+//    TourBookingService tourBookingService;
 
     public BookingController() {
         this.flightBookingService = new BookingManager();
         this.hotelBookingService = new Booker();
-        this.tourBookingService = new TourBookingMock();
+//        this.tourBookingService = new TourBookingMock();
     }
 
     public ComboBooking bookCombo(TripCombo combo) {
@@ -42,7 +40,7 @@ public class BookingController {
         );
 
         // Book tour
-        tourBookingService.bookTour(combo.getTour(), numPeople);
+//        tourBookingService.bookTour(combo.getTour(), numPeople);
 
         // Just return an empty object for now, maybe unneccessary
         return new ComboBooking();

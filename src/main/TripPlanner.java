@@ -4,8 +4,8 @@ import main.flightsearch.controllers.SearchEngine;
 import main.flightsearch.models.Flight;
 import main.hotelsearch.Hotel;
 import main.hotelsearch.HotelFinder;
-import main.mock.*;
-import main.service.TourSearchService;
+import main.toursearch.controller.SearchManager;
+import main.toursearch.model.Tour;
 import main.util.Util;
 
 import java.lang.reflect.Array;
@@ -36,7 +36,6 @@ public class TripPlanner {
 
 	private SearchEngine flightSearch;
 	private HotelFinder hotelSearch;
-	private TourSearchService tourSearch;
 
 	public TripPlanner(Date depDate, Date returnDate) {
 		this.depTime = depDate;
@@ -87,7 +86,6 @@ public class TripPlanner {
 	public void initServices() {
 		flightSearch = new SearchEngine();
 		hotelSearch = new HotelFinder(depTime.toString(), returnTime.toString());
-		tourSearch = new TourSearchMock();
 	}
 
 	public List<TripCombo> suggestCombos(int numCombos) {
@@ -106,41 +104,43 @@ public class TripPlanner {
 		ArrayList<Hotel> hotelList = hotelSearch.getFreeRoomsFromHotelLocation(destLocation);
 		List<HotelWrapper> wrappedHotelList = HotelWrapper.wrapList(hotelList);
 
-//		for(int i=0; i<numCombos; i++) {
-//			// Pick arbitrary pairs of flights
-//			int depIndex = Util.randomIndex(depFlightList);
-//			int returnIndex = Util.randomIndex(returnFlightList);
-//			Flight depFlight = depFlightList.get(depIndex);
-//			Flight returnFlight = returnFlightList.get(returnIndex);
-//
-//			int priceRemaining = priceHigher - depFlight.getPrice() - returnFlight.getPrice();
-//
-//			// Pick an arbitrary hotel, given that it fits our price constraints
-//			int hotelIndex = Util.randomIndex(wrappedHotelList);
-//			while(wrappedHotelList.get(hotelIndex).getRate() > priceRemaining * 2/3) {
-//				hotelIndex = Util.randomIndex(hotelList);
-//			}
-//			HotelWrapper hotel = wrappedHotelList.get(hotelIndex);
-//
-//			priceRemaining -= hotel.getRate();
-//
-//			// Pick a tour for the rest of the money
-//			String type = tourType.get(Util.randomIndex(tourType));
-//			List<Tour> tourList = tourSearch.createList(0, priceRemaining, tourDurationLower, tourDurationHigher,
-//					depTime, returnTime, numPeople, destLocation, null, type, minTourRating, tourHotelPickup, null);
-//			int tourIndex = Util.randomIndex(tourList);
-//			while(tourList.get(tourIndex).getPrice() > priceRemaining) {
-//				tourIndex = Util.randomIndex(tourList);
-//			}
-//			Tour tour = tourList.get(tourIndex);
-//
-//			// Finally add our findings to the list of combos
-//			combos.add(new TripCombo(depFlight, returnFlight, hotel, tour, numPeople));
-//		}
+		List<Tour> tourList = new ArrayList<>();
 
-		combos.add(new TripCombo(depFlightList.get(0), returnFlightList.get(0), wrappedHotelList.get(0), new TourMock(), 5));
-		combos.add(new TripCombo(depFlightList.get(0), returnFlightList.get(0), wrappedHotelList.get(0), new TourMock(), 5));
-		combos.add(new TripCombo(depFlightList.get(0), returnFlightList.get(0), wrappedHotelList.get(0), new TourMock(), 5));
+		for(int i=0; i<numCombos; i++) {
+			// Pick arbitrary pairs of flights
+			int depIndex = Util.randomIndex(depFlightList);
+			int returnIndex = Util.randomIndex(returnFlightList);
+			Flight depFlight = depFlightList.get(depIndex);
+			Flight returnFlight = returnFlightList.get(returnIndex);
+
+			int priceRemaining = priceHigher - (int) depFlight.getPrice() - (int) returnFlight.getPrice();
+
+			// Pick an arbitrary hotel, given that it fits our price constraints
+			int hotelIndex = Util.randomIndex(wrappedHotelList);
+			while(wrappedHotelList.get(hotelIndex).getRate() > priceRemaining * 2/3) {
+				hotelIndex = Util.randomIndex(hotelList);
+			}
+			HotelWrapper hotel = wrappedHotelList.get(hotelIndex);
+
+			priceRemaining -= hotel.getRate();
+
+			// Pick a tour for the rest of the money
+			String type = tourType.get(Util.randomIndex(tourType));
+			tourList = SearchManager.createList(0, priceRemaining, tourDurationLower, tourDurationHigher,
+					depTime, returnTime, numPeople, destLocation, null, type, minTourRating, tourHotelPickup, null);
+			int tourIndex = Util.randomIndex(tourList);
+			while(tourList.get(tourIndex).getPrice() > priceRemaining) {
+				tourIndex = Util.randomIndex(tourList);
+			}
+			Tour tour = tourList.get(tourIndex);
+
+			// Finally add our findings to the list of combos
+			combos.add(new TripCombo(depFlight, returnFlight, hotel, tour, numPeople));
+		}
+
+		combos.add(new TripCombo(depFlightList.get(0), returnFlightList.get(0), wrappedHotelList.get(0), tourList.get(0), 5));
+		combos.add(new TripCombo(depFlightList.get(0), returnFlightList.get(0), wrappedHotelList.get(0), tourList.get(0), 5));
+		combos.add(new TripCombo(depFlightList.get(0), returnFlightList.get(0), wrappedHotelList.get(0), tourList.get(0), 5));
 
 		return combos;
 	}
@@ -204,7 +204,7 @@ public class TripPlanner {
 
 		int minPrice = Integer.MAX_VALUE;
 		for(String type: tourType) {
-			List<Tour> tours = tourSearch.createList(0, priceHigher, tourDurationLower, tourDurationHigher,
+			List<Tour> tours = SearchManager.createList(0, priceHigher, tourDurationLower, tourDurationHigher,
 					depTime, returnTime, numPeople, destLocation, null, type, minTourRating, tourHotelPickup, null);
 
 			for(Tour tour: tours) {

@@ -7,11 +7,12 @@ import main.flightsearch.controllers.SearchEngine;
 import main.flightsearch.models.Flight;
 import main.hotelsearch.Hotel;
 import main.hotelsearch.HotelFinder;
-import main.mock.*;
-import main.service.TourSearchService;
+import main.toursearch.controller.SearchManager;
+import main.toursearch.model.Tour;
 
 import java.lang.reflect.Array;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -22,7 +23,6 @@ public class SearchController {
 
 	SearchEngine flightSearch;
     HotelFinder hotelSearch;
-    TourSearchService tourSearch;
     TripPlanner tripPlanner;
 
     ArrayList<Flight> flightResults;
@@ -57,6 +57,11 @@ public class SearchController {
     Date tourDateLower;
     Date tourDateHigher;
 	List<String> tourTypes;
+	String tourType = "";
+	String tourDestination = "";
+	int tourRating;
+	boolean tourHotelPickup;
+	String tourName = "";
 	
 	public SearchController(Date departDate, Date returnDate) {
 		this.departureDate = departDate;
@@ -66,13 +71,14 @@ public class SearchController {
 
 		flightSearch = new SearchEngine();
 		hotelSearch = new HotelFinder(dateToString(departDate), dateToString(returnDate));
-		tourSearch = new TourSearchMock();
 		tripPlanner = new TripPlanner(departDate, returnDate);
 
 		selectedHotelFacilities = new boolean[14];
 		for(int i=1; i<selectedHotelFacilities.length; i++) {
 			selectedHotelFacilities[i] = false;
 		}
+
+		this.tourRating = 0;
 	}
 
 	public ArrayList<Flight> searchFlights() {
@@ -124,7 +130,16 @@ public class SearchController {
 	}
 
 	public ArrayList<Tour> searchTours() {
-		tourResults = tourSearch.createList();
+		try {
+			tourResults = SearchManager.createList(tourPriceLower, tourPriceHigher, tourDurationLower, tourDurationHigher,
+					tourDateLower, tourDateHigher, numPeople, tourDestination, departLocation, tourType, tourRating,
+					tourHotelPickup, tourName);
+		} catch (Exception e) {
+			System.out.println("Error: " + e.getMessage());
+			tourResults = new ArrayList<>();
+		}
+
+//		tourResults = SearchManager.createList(null, null, null, null, null, null, null, "", "", "", null, false, "SnowMobile Adventure");
 
 		return tourResults;
 	}
@@ -334,5 +349,46 @@ public class SearchController {
 	public void setTourTypes(List<String> tourTypes) {
 		this.tourTypes = tourTypes;
 		tripPlanner.setTourType(tourTypes);
+	}
+
+	public String getTourType() {
+		return tourType;
+	}
+
+	public void setTourType(String tourType) {
+		this.tourType = tourType;
+	}
+
+	public String getTourDestination() {
+		return tourDestination;
+	}
+
+	public void setTourDestination(String tourDestination) {
+		this.tourDestination = tourDestination;
+	}
+
+	public int getTourRating() {
+		return tourRating;
+	}
+
+	public void setTourRating(int tourRating) {
+		System.out.println(tourRating);
+		this.tourRating = tourRating;
+	}
+
+	public boolean isTourHotelPickup() {
+		return tourHotelPickup;
+	}
+
+	public void setTourHotelPickup(boolean tourHotelPickup) {
+		this.tourHotelPickup = tourHotelPickup;
+	}
+
+	public String getTourName() {
+		return tourName;
+	}
+
+	public void setTourName(String tourName) {
+		this.tourName = tourName;
 	}
 }
