@@ -313,7 +313,7 @@ public class Main extends Application {
         hotelLocation.setValue("Reykjavík");
         hotelLocation.setOnAction(e -> searchController.setDestLocation(hotelLocation.getValue()));
         hotelLocation.setMaxWidth(Double.MAX_VALUE);
-        searchController.setDestLocation("Reykjavík");
+        searchController.setDestLocation("Akureyri");
 
         CheckBox cb1 = new CheckBox();
         CheckBox cb2 = new CheckBox();
@@ -619,16 +619,16 @@ public class Main extends Application {
 
         // cart from column setup
         TableColumn<Cart, String> columnCartType = new TableColumn<>("Type");
-        columnTourName.setCellValueFactory(new PropertyValueFactory<>("cartType"));
+        columnCartType.setCellValueFactory(new PropertyValueFactory<>("cartType"));
         // cart from column setup
         TableColumn<Cart, String> columnCartFrom = new TableColumn<>("Date from");
-        columnTourType.setCellValueFactory(new PropertyValueFactory<>("cartFrom"));
+        columnCartFrom.setCellValueFactory(new PropertyValueFactory<>("cartFrom"));
         // cart from column setup
         TableColumn<Cart, String> columnCartTo = new TableColumn<>("Date to");
-        columnTourDeparture.setCellValueFactory(new PropertyValueFactory<>("cartTo"));
+        columnCartTo.setCellValueFactory(new PropertyValueFactory<>("cartTo"));
         // cart from column setup
         TableColumn<Cart, Integer> columnCartPrice = new TableColumn<>("Price");
-        columnTourPrice.setCellValueFactory(new PropertyValueFactory<>("cartPrice"));
+        columnCartPrice.setCellValueFactory(new PropertyValueFactory<>("cartPrice"));
 
         tableViewCart = new TableView<>();
         tableViewCart.getColumns().addAll(
