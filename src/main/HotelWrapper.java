@@ -18,8 +18,6 @@ public class HotelWrapper {
     public static ArrayList<HotelWrapper> wrapList(ArrayList<Hotel> hotels) {
         ArrayList<HotelWrapper> wrappedList = new ArrayList<>();
 
-        System.out.println(hotels.size());
-
         for(Hotel hotel: hotels) {
             ArrayList<HotelRoom> rooms = hotel.getHotelRooms();
             for(HotelRoom room: rooms) {

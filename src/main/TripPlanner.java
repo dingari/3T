@@ -36,7 +36,10 @@ public class TripPlanner {
 	private HotelFinderService hotelSearch;
 	private TourSearchService tourSearch;
 
-	public TripPlanner() {
+	public TripPlanner(Date depDate, Date returnDate) {
+		this.depTime = depDate;
+		this.returnTime = returnDate;
+
 		initServices();
 	}
 
@@ -79,7 +82,7 @@ public class TripPlanner {
 		initServices();
 	}
 
-	private void initServices() {
+	public void initServices() {
 		flightSearch = new FlightSearchMock();
 		hotelSearch = new HotelFinderMock(depTime.toString(), returnTime.toString());
 		tourSearch = new TourSearchMock();
@@ -93,18 +96,19 @@ public class TripPlanner {
 	public List<TripCombo> suggestCombos(int numCombos) {
 		// A list of combos to return
 		List<TripCombo> combos = new ArrayList<>(numCombos);
-//
-//		// Get a list of flights to and from the destination
-//		ArrayList<Flight> depFlightList = searchOutboundFlights();
-//		ArrayList<Flight> returnFlightList = searchInboundFlights();
-//
-//		// Don't allow flight prices to be more than 1/3 of the max price
-//		depFlightList = flightSearch.filterFlightList(depFlightList, null, null, false, false, false, priceHigher/3);
-//		returnFlightList = flightSearch.filterFlightList(returnFlightList, null, null, false, false, false, priceHigher/3);
-//
-//		// Get a list of hotels near the destination
-//		List<Hotel> hotelList = hotelSearch.getFreeRoomsFromHotelLocation(destLocation);
-//
+
+		// Get a list of flights to and from the destination
+		ArrayList<Flight> depFlightList = searchOutboundFlights();
+		ArrayList<Flight> returnFlightList = searchInboundFlights();
+
+		// Don't allow flight prices to be more than 1/3 of the max price
+		depFlightList = flightSearch.filterFlightList(depFlightList, null, null, false, false, false, priceHigher/3);
+		returnFlightList = flightSearch.filterFlightList(returnFlightList, null, null, false, false, false, priceHigher/3);
+
+		// Get a list of hotels near the destination
+		ArrayList<Hotel> hotelList = hotelSearch.getFreeRoomsFromHotelLocation(destLocation);
+		List<HotelWrapper> wrappedHotelList = HotelWrapper.wrapList(hotelList);
+
 //		for(int i=0; i<numCombos; i++) {
 //			// Pick arbitrary pairs of flights
 //			int depIndex = Util.randomIndex(depFlightList);
@@ -115,11 +119,11 @@ public class TripPlanner {
 //			int priceRemaining = priceHigher - depFlight.getPrice() - returnFlight.getPrice();
 //
 //			// Pick an arbitrary hotel, given that it fits our price constraints
-//			int hotelIndex = Util.randomIndex(hotelList);
-//			while(hotelList.get(hotelIndex).getRate() > priceRemaining * 2/3) {
+//			int hotelIndex = Util.randomIndex(wrappedHotelList);
+//			while(wrappedHotelList.get(hotelIndex).getRate() > priceRemaining * 2/3) {
 //				hotelIndex = Util.randomIndex(hotelList);
 //			}
-//			HotelRoom hotel = hotelList.get(hotelIndex);
+//			HotelWrapper hotel = wrappedHotelList.get(hotelIndex);
 //
 //			priceRemaining -= hotel.getRate();
 //
@@ -136,6 +140,10 @@ public class TripPlanner {
 //			// Finally add our findings to the list of combos
 //			combos.add(new TripCombo(depFlight, returnFlight, hotel, tour, numPeople));
 //		}
+
+		combos.add(new TripCombo(depFlightList.get(0), returnFlightList.get(0), wrappedHotelList.get(0), new TourMock(), 5));
+		combos.add(new TripCombo(depFlightList.get(0), returnFlightList.get(0), wrappedHotelList.get(0), new TourMock(), 5));
+		combos.add(new TripCombo(depFlightList.get(0), returnFlightList.get(0), wrappedHotelList.get(0), new TourMock(), 5));
 
 		return combos;
 	}

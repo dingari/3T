@@ -70,4 +70,24 @@ public class TripCombo {
     public void setTour(Tour tour) {
         this.tour = tour;
     }
+
+    public String getDepartureTime() {
+        return outboundFlight.getDepartureTime();
+    }
+
+    public String getReturnTime() {
+        return inboundFlight.getArrivalTime();
+    }
+
+    public String getHotelName() {
+        return hotel.getName();
+    }
+
+    public String getTourName() {
+        return tour.getName();
+    }
+
+    public String getTourType() {
+        return tour.getType();
+    }
 }

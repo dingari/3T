@@ -16,7 +16,7 @@ public interface HotelFinderService {
 
     public ArrayList<Hotel> getFreeRoomsFromAnyHotel();
 
-    public ArrayList<Hotel> getFreeHotelsFromAnyHotelSubString(String substring);
+    public ArrayList<Hotel> getFreeRoomsFromAnyHotelSubString(String substring);
 
     public void book(Hotel hotel, int roomId);
 

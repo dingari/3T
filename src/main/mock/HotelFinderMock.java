@@ -6,6 +6,10 @@ import java.util.ArrayList;
 
 public class HotelFinderMock implements HotelFinderService {
 
+    public HotelFinderMock() {
+
+    }
+
     public HotelFinderMock(String newCheckInDate, String newCheckoutDate) {
 
     }
@@ -47,7 +51,7 @@ public class HotelFinderMock implements HotelFinderService {
     }
 
     @Override
-    public ArrayList<Hotel> getFreeHotelsFromAnyHotelSubString(String substring) {
+    public ArrayList<Hotel> getFreeRoomsFromAnyHotelSubString(String substring) {
         return null;
     }
 
@@ -68,6 +72,11 @@ public class HotelFinderMock implements HotelFinderService {
 
     @Override
     public ArrayList<Hotel> filterHotelWithFacilities(ArrayList<Hotel> hotels, int[] facilityId) {
-        return null;
+        ArrayList<Hotel> list = new ArrayList<>();
+        list.add(new HotelMock());
+        list.add(new HotelMock());
+        list.add(new HotelMock());
+
+        return list;
     }
 }
