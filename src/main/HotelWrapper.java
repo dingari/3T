@@ -1,7 +1,8 @@
 package main;
 
-import main.mock.Hotel;
-import main.mock.HotelRoom;
+
+import main.hotelsearch.Hotel;
+import main.hotelsearch.HotelRoom;
 
 import java.util.ArrayList;
 

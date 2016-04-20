@@ -5,8 +5,9 @@ import main.TripCombo;
 import main.TripPlanner;
 import main.flightsearch.controllers.SearchEngine;
 import main.flightsearch.models.Flight;
+import main.hotelsearch.Hotel;
+import main.hotelsearch.HotelFinder;
 import main.mock.*;
-import main.service.HotelFinderService;
 import main.service.TourSearchService;
 
 import java.lang.reflect.Array;
@@ -20,7 +21,7 @@ import java.util.List;
 public class SearchController {
 
 	SearchEngine flightSearch;
-    HotelFinderService hotelSearch;
+    HotelFinder hotelSearch;
     TourSearchService tourSearch;
     TripPlanner tripPlanner;
 
@@ -64,7 +65,7 @@ public class SearchController {
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
 		flightSearch = new SearchEngine();
-		hotelSearch = new HotelFinderMock(dateToString(departDate), dateToString(returnDate));
+		hotelSearch = new HotelFinder(dateToString(departDate), dateToString(returnDate));
 		tourSearch = new TourSearchMock();
 		tripPlanner = new TripPlanner(departDate, returnDate);
 

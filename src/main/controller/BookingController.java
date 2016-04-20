@@ -5,20 +5,24 @@ import main.HotelBooking;
 import main.TourBooking;
 import main.TripCombo;
 import main.flightsearch.controllers.BookingManager;
-import main.mock.HotelBookingMock;
+import main.hotelsearch.Booker;
 import main.mock.TourBookingMock;
-import main.service.HotelBookingService;
 import main.service.TourBookingService;
+
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 public class BookingController {
 
     BookingManager flightBookingService;
-    HotelBookingService hotelBookingService;
+    Booker hotelBookingService;
     TourBookingService tourBookingService;
 
     public BookingController() {
         this.flightBookingService = new BookingManager();
-        this.hotelBookingService = new HotelBookingMock();
+        this.hotelBookingService = new Booker();
         this.tourBookingService = new TourBookingMock();
     }
 
@@ -30,8 +34,12 @@ public class BookingController {
         flightBookingService.updateFlight(combo.getOutboundFlight(), numPeople, false);
 
         // Book hotel room
-        int roomID = 0; // TODO: Get a room ID somehow
-        hotelBookingService.bookHotelRoom(combo.getHotel().getHotel(), roomID);
+        hotelBookingService.book(
+                combo.getHotel().getHotel(),
+                combo.getHotel().getHotelRoom().getId(),
+                Date.valueOf(combo.getDepartureTime()),
+                Date.valueOf(combo.getReturnTime())
+        );
 
         // Book tour
         tourBookingService.bookTour(combo.getTour(), numPeople);

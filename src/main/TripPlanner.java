@@ -2,8 +2,9 @@ package main;
 
 import main.flightsearch.controllers.SearchEngine;
 import main.flightsearch.models.Flight;
+import main.hotelsearch.Hotel;
+import main.hotelsearch.HotelFinder;
 import main.mock.*;
-import main.service.HotelFinderService;
 import main.service.TourSearchService;
 import main.util.Util;
 
@@ -34,7 +35,7 @@ public class TripPlanner {
 	private boolean tourHotelPickup;
 
 	private SearchEngine flightSearch;
-	private HotelFinderService hotelSearch;
+	private HotelFinder hotelSearch;
 	private TourSearchService tourSearch;
 
 	public TripPlanner(Date depDate, Date returnDate) {
@@ -85,13 +86,8 @@ public class TripPlanner {
 
 	public void initServices() {
 		flightSearch = new SearchEngine();
-		hotelSearch = new HotelFinderMock(depTime.toString(), returnTime.toString());
+		hotelSearch = new HotelFinder(depTime.toString(), returnTime.toString());
 		tourSearch = new TourSearchMock();
-	}
-
-	public Map<String, Collection> search() {
-		// TODO: implement this
-		return new HashMap<String, Collection>();
 	}
 
 	public List<TripCombo> suggestCombos(int numCombos) {

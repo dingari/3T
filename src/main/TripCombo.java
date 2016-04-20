@@ -1,8 +1,6 @@
 package main;
 
 import main.flightsearch.models.Flight;
-import main.mock.Hotel;
-import main.mock.HotelRoom;
 import main.mock.Tour;
 
 public class TripCombo {
