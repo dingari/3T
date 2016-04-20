@@ -47,7 +47,7 @@ public class Main extends Application {
         // Top menu
         HBox topMenu = new HBox();
 
-        Image imageCombo = new Image(getClass().getResourceAsStream("iflights.png"));
+        Image imageCombo = new Image(getClass().getResourceAsStream("icombo.png"));
         Image imageFlights = new Image(getClass().getResourceAsStream("iflights.png"));
         Image imageHotels = new Image(getClass().getResourceAsStream("ihotels.png"));
         Image imageTours = new Image(getClass().getResourceAsStream("itours.png"));
