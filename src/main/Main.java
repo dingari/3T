@@ -19,6 +19,8 @@ import main.controller.SearchController;
 import main.flightsearch.models.Flight;
 import main.toursearch.model.Tour;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -42,7 +44,8 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
 
-        searchController = new SearchController(new Date(), new Date());
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        searchController = new SearchController(df.parse("2016-04-20"), df.parse("2016-04-22"));
 
         // Top menu
         HBox topMenu = new HBox();
@@ -80,30 +83,29 @@ public class Main extends Application {
 
         // Combo boxes
         ComboBox<String> comboDepartLocationBox = new ComboBox<>();
-        comboDepartLocationBox.getItems().addAll("Reykjavik","Akureyri","Egilsstadir","Isafjordur","Casablanca");
+        comboDepartLocationBox.getItems().addAll("Reykjavik","Akureyri","Egilsstadir","Isafjordur", "Iceland", "Casablanca");
         comboDepartLocationBox.setValue("Reykjavik");
         comboDepartLocationBox.setMaxWidth(Double.MAX_VALUE);
         comboDepartLocationBox.setOnAction(e -> searchController.setDepartLocation(comboDepartLocationBox.getValue()));
+        searchController.setDepartLocation("Reykjavik");
 
         ComboBox<String> comboDestLocationBox = new ComboBox<>();
-        comboDestLocationBox.getItems().addAll("Reykjavik","Akureyri","Egilsstadir","Isafjordur","Casablanca");
-        comboDestLocationBox.getItems().addAll("Reykjavik","Akureyri","Egilsstadir","Isafjordur","Casablanca");
-        comboDestLocationBox.setValue("Reykjavik");
+        comboDestLocationBox.getItems().addAll("Reykjavik","Akureyri","Egilsstadir","Isafjordur", "Iceland", "Casablanca");
+        comboDestLocationBox.setValue("Akureyri");
         comboDestLocationBox.setMaxWidth(Double.MAX_VALUE);
         comboDestLocationBox.setOnAction(e -> searchController.setDestLocation(comboDestLocationBox.getValue()));
+        searchController.setDestLocation("Akureyri ");
 
         // # date pickers
         DatePicker comboDepartDatePicker = new DatePicker();
         comboDepartDatePicker.setOnAction(e -> {
-            LocalDate localDate = comboDepartDatePicker.getValue();
-            Date date = new Date(localDate.toEpochDay());
+            Date date = Date.from(comboDepartDatePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
             searchController.setDepartureDate(date);
         });
 
         DatePicker comboReturnDatePicker = new DatePicker();
         comboReturnDatePicker.setOnAction(e -> {
-            LocalDate localDate = comboReturnDatePicker.getValue();
-            Date date = new Date(localDate.toEpochDay());
+            Date date = Date.from(comboReturnDatePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
             searchController.setDepartureDate(date);
         });
 
@@ -116,6 +118,15 @@ public class Main extends Application {
             String passengers = comboPassengersNumber.getValue();
             searchController.setNumPeople(Integer.parseInt(passengers));
         });
+        searchController.setNumPeople(1);
+
+        Label comboPriceLowerLabel = new Label("Price");
+
+        TextField comboPriceLower = new TextField();
+        comboPriceLower.setPromptText("Minimum price");
+
+        TextField comboPriceHigher = new TextField();
+        comboPriceHigher.setPromptText("Maximum price");
 
         Button comboSearchButton = new Button("Search", new ImageView(imageSearch));
         comboSearchButton.setMaxWidth(Double.MAX_VALUE);
@@ -133,6 +144,9 @@ public class Main extends Application {
                 comboReturnDatePicker,
                 comboPassengerNumberLabel,
                 comboPassengersNumber,
+                comboPriceLowerLabel,
+                comboPriceLower,
+                comboPriceHigher,
                 comboSearchButton,
                 comboToCart
         );
@@ -207,15 +221,15 @@ public class Main extends Application {
 
         // # combo locations from
         ComboBox<String> flightsLocationFrom = new ComboBox<String>();
-        flightsLocationFrom.getItems().addAll("Reykjavik","Akureyri","Egilsstadir","Isafjordur","Casablanca");
+        flightsLocationFrom.getItems().addAll("Reykjavik","Akureyri","Egilsstadir","Isafjordur", "Iceland", "Casablanca");
         flightsLocationFrom.setValue("Reykjavik");
         searchController.setDepartLocation("Reykjavik");
         flightsLocationFrom.setOnAction(e -> searchController.setDepartLocation(flightsLocationFrom.getValue()));
         // # combo locations to
         ComboBox<String> flightsLocationTo = new ComboBox<String>();
-        flightsLocationTo.getItems().addAll("Reykjavik","Akureyri","Egilsstadir","Isafjordur","Casablanca");
-        flightsLocationTo.setValue("Reykjavik");
-        searchController.setDestLocation("Reykjavik");
+        flightsLocationTo.getItems().addAll("Reykjavik","Akureyri","Egilsstadir","Isafjordur", "Iceland", "Casablanca");
+        flightsLocationTo.setValue("Akureyri");
+        searchController.setDestLocation("Akureyri");
         flightsLocationTo.setOnAction(e -> searchController.setDestLocation(flightsLocationTo.getValue()));
         // # combo passengers
         ComboBox<String> flightsPassengersNumber = new ComboBox<String>();
@@ -624,7 +638,21 @@ public class Main extends Application {
 
         // Search buttons
 
-        comboSearchButton.setOnAction(e -> searchAll());
+        comboSearchButton.setOnAction(e -> {
+            int priceLower = 0;
+            int priceHigher = Integer.MAX_VALUE;
+
+            try { priceLower = Integer.parseInt(comboPriceLower.getText()); }
+            catch (NumberFormatException err) { System.out.println("Error: " + err.getMessage()); }
+
+            try { priceHigher = Integer.parseInt(comboPriceHigher.getText()); }
+            catch (NumberFormatException err) { System.out.println("Error: " + err.getMessage()); }
+
+            searchController.setMinPrice(priceLower);
+            searchController.setMaxPrice(priceHigher);
+
+            searchAll();
+        });
 
         searchButtonFlight.setOnAction(e -> tableViewFlights.setItems(getFlights()));
 
@@ -732,7 +760,7 @@ public class Main extends Application {
     }
 
     public void searchAll() {
-//        tableViewCombo.setItems(getCombos());
+        tableViewCombo.setItems(getCombos());
         tableViewFlights.setItems(getFlights());
         tableViewHotels.setItems(getHotels());
         tableViewTours.setItems(getTours());

@@ -36,6 +36,7 @@ public class SearchController {
 	String departLocation;
 	String destLocation;
 	int numPeople;
+	int minPrice;
 	int maxPrice;
 
 	// Flight specific parameters
@@ -139,8 +140,6 @@ public class SearchController {
 			tourResults = new ArrayList<>();
 		}
 
-//		tourResults = SearchManager.createList(null, null, null, null, null, null, null, "", "", "", null, false, "SnowMobile Adventure");
-
 		return tourResults;
 	}
 
@@ -212,7 +211,7 @@ public class SearchController {
 
 	public void setDestLocation(String destLocation) {
 		this.destLocation = destLocation;
-		tripPlanner.setDepLocation(destLocation);
+		tripPlanner.setDestLocation(destLocation);
 	}
 
 	public int getNumPeople() {
@@ -390,5 +389,14 @@ public class SearchController {
 
 	public void setTourName(String tourName) {
 		this.tourName = tourName;
+	}
+
+	public int getMinPrice() {
+		return minPrice;
+	}
+
+	public void setMinPrice(int minPrice) {
+		this.minPrice = minPrice;
+		tripPlanner.setPriceLower(minPrice);
 	}
 }

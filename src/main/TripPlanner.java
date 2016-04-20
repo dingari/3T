@@ -9,6 +9,8 @@ import main.toursearch.model.Tour;
 import main.util.Util;
 
 import java.lang.reflect.Array;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class TripPlanner {
@@ -84,11 +86,14 @@ public class TripPlanner {
 	}
 
 	public void initServices() {
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+
 		flightSearch = new SearchEngine();
-		hotelSearch = new HotelFinder(depTime.toString(), returnTime.toString());
+		hotelSearch = new HotelFinder(df.format(depTime), df.format(returnTime));
 	}
 
 	public List<TripCombo> suggestCombos(int numCombos) {
+		System.out.println("Combo search: " + depTime + ", " + returnTime + "," + depLocation + ", " + destLocation + ", " + numPeople + ", " + priceHigher + ", " + priceLower);
 		// A list of combos to return
 		List<TripCombo> combos = new ArrayList<>(numCombos);
 
@@ -96,9 +101,13 @@ public class TripPlanner {
 		ArrayList<Flight> depFlightList = searchOutboundFlights();
 		ArrayList<Flight> returnFlightList = searchInboundFlights();
 
+		System.out.println("Outbound flights: " + depFlightList.size());
+		System.out.println("Inbound flights: " + returnFlightList.size());
+
 		// Don't allow flight prices to be more than 1/3 of the max price
-//		depFlightList = flightSearch.filterFlightList(depFlightList, null, null, false, false, false, priceHigher/3);
-//		returnFlightList = flightSearch.filterFlightList(returnFlightList, null, null, false, false, false, priceHigher/3);
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+		depFlightList = flightSearch.filterFlightList(depFlightList, "", "", false, false, false, priceHigher/3);
+		returnFlightList = flightSearch.filterFlightList(returnFlightList, "", "", false, false, false, priceHigher/3);
 
 		// Get a list of hotels near the destination
 		ArrayList<Hotel> hotelList = hotelSearch.getFreeRoomsFromHotelLocation(destLocation);
@@ -106,7 +115,13 @@ public class TripPlanner {
 
 		List<Tour> tourList = new ArrayList<>();
 
+		if(depFlightList.size() ==0 || returnFlightList.size() ==0 || hotelList.size() == 0) {
+			System.out.println("no combo found");
+			return combos;
+		}
+
 		for(int i=0; i<numCombos; i++) {
+			System.out.println("loop1: " + i);
 			// Pick arbitrary pairs of flights
 			int depIndex = Util.randomIndex(depFlightList);
 			int returnIndex = Util.randomIndex(returnFlightList);
@@ -116,9 +131,12 @@ public class TripPlanner {
 			int priceRemaining = priceHigher - (int) depFlight.getPrice() - (int) returnFlight.getPrice();
 
 			// Pick an arbitrary hotel, given that it fits our price constraints
+			int count = 0;
 			int hotelIndex = Util.randomIndex(wrappedHotelList);
-			while(wrappedHotelList.get(hotelIndex).getRate() > priceRemaining * 2/3) {
+			while(wrappedHotelList.get(hotelIndex).getRate() > priceRemaining * 2/3 || count < 100) {
+				System.out.println("loop2 " + wrappedHotelList.get(hotelIndex).getRate());
 				hotelIndex = Util.randomIndex(hotelList);
+				count++;
 			}
 			HotelWrapper hotel = wrappedHotelList.get(hotelIndex);
 
@@ -126,10 +144,12 @@ public class TripPlanner {
 
 			// Pick a tour for the rest of the money
 			String type = tourType.get(Util.randomIndex(tourType));
+			count = 0;
 			tourList = SearchManager.createList(0, priceRemaining, tourDurationLower, tourDurationHigher,
 					depTime, returnTime, numPeople, destLocation, null, type, minTourRating, tourHotelPickup, null);
 			int tourIndex = Util.randomIndex(tourList);
-			while(tourList.get(tourIndex).getPrice() > priceRemaining) {
+			while(tourList.get(tourIndex).getPrice() > priceRemaining && count < 0) {
+				System.out.println("loop3");
 				tourIndex = Util.randomIndex(tourList);
 			}
 			Tour tour = tourList.get(tourIndex);
@@ -163,11 +183,13 @@ public class TripPlanner {
 	}
 
 	private ArrayList<Flight> searchOutboundFlights() {
-		return flightSearch.searchFlightByCriteria(depTime.toString(), depLocation, destLocation, numPeople);
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+		return flightSearch.searchFlightByCriteria(df.format(depTime), depLocation, destLocation, numPeople);
 	}
 
 	private ArrayList<Flight> searchInboundFlights() {
-		return flightSearch.searchFlightByCriteria(returnTime.toString(), destLocation, depLocation, numPeople);
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+		return flightSearch.searchFlightByCriteria(df.format(returnTime), destLocation, depLocation, numPeople);
 	}
 
 	// May be unneccessary since the flight list is obtained in ascending order by price
