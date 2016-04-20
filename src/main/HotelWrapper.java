@@ -52,4 +52,8 @@ public class HotelWrapper {
     public HotelRoom getHotelRoom() {
         return hotelRoom;
     }
+
+    public int getCapacity() {
+        return hotelRoom.getNumPerson();
+    }
 }

@@ -289,6 +289,13 @@ public class Main extends Application {
                                                 #
                                                 #
         */
+
+        ComboBox<String> hotelLocation = new ComboBox<>();
+        hotelLocation.getItems().addAll("Reykjavík", "Egilsstaðir", "Akureyri", "Ísafjörður");
+        hotelLocation.setValue("Reykjavík");
+        hotelLocation.setOnAction(e -> searchController.setDestLocation(hotelLocation.getValue()));
+        hotelLocation.setMaxWidth(Double.MAX_VALUE);
+
         CheckBox cb1 = new CheckBox();
         CheckBox cb2 = new CheckBox();
         CheckBox cb3 = new CheckBox();
@@ -387,6 +394,7 @@ public class Main extends Application {
         TextField tFSH = new TextField ();
 
         menuHotels.getChildren().addAll(
+                hotelLocation,
                 checkInDate,
                 checkOutDate,
                 labelSH,
@@ -422,6 +430,9 @@ public class Main extends Application {
         // hotels from column setup
         TableColumn<HotelWrapper, String> columnHotelLocation = new TableColumn<>("Hotel Location");
         columnHotelLocation.setCellValueFactory(new PropertyValueFactory<>("city"));
+
+        TableColumn<HotelWrapper, String> columnHotelCapacity = new TableColumn<>("Capacity");
+        columnHotelCapacity.setCellValueFactory(new PropertyValueFactory<>("capacity"));
         // flights from column setup
         TableColumn<HotelWrapper, Integer> columnHotelPrice = new TableColumn<>("Price");
         columnHotelPrice.setCellValueFactory(new PropertyValueFactory<>("rate"));
@@ -432,7 +443,9 @@ public class Main extends Application {
                 columnHotelName,
                 columnHotelChain,
                 columnHotelLocation,
-                columnHotelPrice);
+                columnHotelCapacity,
+                columnHotelPrice
+        );
 
         HBox mainHotels = new HBox();
         mainHotels.getChildren().addAll(tableViewHotels);
@@ -522,7 +535,8 @@ public class Main extends Application {
                 tourRating,
                 tourHotelPickup,
                 tourName,
-                tourSearchButton
+                tourSearchButton,
+                tourToCart
         );
 
         // TOURS TABLES
@@ -640,9 +654,25 @@ public class Main extends Application {
 
         comboSearchButton.setOnAction(e -> searchAll());
 
-        searchButtonFlight.setOnAction(e -> searchController.searchFlights());
+        searchButtonFlight.setOnAction(e -> tableViewFlights.setItems(getFlights()));
 
-        searchHButton.setOnAction(e -> searchController.searchHotels());
+        searchHButton.setOnAction(e -> tableViewHotels.setItems(getHotels()));
+
+        comboToCart.setOnAction(e -> {
+            System.out.println("Selected combo: " + tableViewCombo.getSelectionModel().getSelectedItem());
+        });
+
+        buttonFlightToCart.setOnAction(e -> {
+            System.out.println("Selected flight: " + tableViewFlights.getSelectionModel().getSelectedItem().getFlightNumber());
+        });
+
+        bookHButton.setOnAction(e -> {
+            System.out.println("Selected hotel room id: " + tableViewHotels.getSelectionModel().getSelectedItem().getHotelRoom().getId());
+        });
+
+        tourToCart.setOnAction(e -> {
+            System.out.println("Selected tour: " + tableViewTours.getSelectionModel().getSelectedItem().getName());
+        });
 
         tourSearchButton.setOnAction(e -> {
             int priceLower = 0;

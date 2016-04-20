@@ -84,12 +84,12 @@ public class SearchController {
 	public ArrayList<Flight> searchFlights() {
 		System.out.println("Searching flights " + dateToString(departureDate) + ", " + departLocation + ", " + destLocation + ", " + numPeople);
         flightResults = flightSearch.searchFlightByCriteria(dateToString(departureDate), departLocation, destLocation, numPeople);
-//        flightResults = flightSearch.filterFlightList(flightResults, flightTimeFrom, flightTimeTo, flightSagaSeats, flightWifi, false, maxPrice);
 
 		return flightResults;
 	}
 
 	public ArrayList<HotelWrapper> searchHotels() {
+		hotelSearch = new HotelFinder(dateToString(departureDate), dateToString(returnDate));
 		ArrayList<Hotel> hotels = new ArrayList<>();
 
 		switch (selectedHotelSearchMethod) {
