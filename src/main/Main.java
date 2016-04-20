@@ -34,6 +34,7 @@ public class Main extends Application {
     TableView<Flight> tableViewFlights;
     TableView<HotelWrapper> tableViewHotels;
     TableView<Tour> tableViewTours;
+    TableView<Cart> tableViewCart;
 
     public static void main(String[] args) {
         launch(args);
@@ -563,11 +564,38 @@ public class Main extends Application {
         VBox menuCart = new VBox();
         Label label4 = new Label("CART");
         Slider slider = new Slider(0,1,0.5);
-        menuCart.getChildren().addAll(label4);
+        menuCart.getChildren().addAll(new ImageView(imageCart));
+
+
+
+        // CART TABLES
+
+        // cart from column setup
+        TableColumn<Cart, String> columnCartType = new TableColumn<>("Type");
+        columnTourName.setCellValueFactory(new PropertyValueFactory<>("cartType"));
+        // cart from column setup
+        TableColumn<Cart, String> columnCartFrom = new TableColumn<>("Date from");
+        columnTourType.setCellValueFactory(new PropertyValueFactory<>("cartFrom"));
+        // cart from column setup
+        TableColumn<Cart, String> columnCartTo = new TableColumn<>("Date to");
+        columnTourDeparture.setCellValueFactory(new PropertyValueFactory<>("cartTo"));
+        // cart from column setup
+        TableColumn<Cart, Integer> columnCartPrice = new TableColumn<>("Price");
+        columnTourPrice.setCellValueFactory(new PropertyValueFactory<>("cartPrice"));
+
+        tableViewCart = new TableView<>();
+        tableViewCart.getColumns().addAll(
+                columnCartType,
+                columnCartFrom,
+                columnCartTo,
+                columnCartPrice);
+
+
+
+
 
         HBox mainCart = new HBox();
-        Label dataCart = new Label("CART WILL BE DISPLAYED HERE");
-        mainCart.getChildren().addAll(dataCart,slider);
+        mainCart.getChildren().addAll(tableViewCart);
 
         /*
 
@@ -603,7 +631,7 @@ public class Main extends Application {
             borderPane.setCenter(mainTours);
         });
         buttonCart.setOnAction(e -> {
-            // borderPane.setLeft(menuCart);
+            borderPane.setLeft(menuCart);
             borderPane.setCenter(mainCart);
         });
 
@@ -682,6 +710,7 @@ public class Main extends Application {
         menuFlights.setId("leftMenu");
         menuHotels.setId("leftMenu");
         menuTours.setId("leftMenu");
+        menuCart.setId("leftMenu");
 
         //setup
 

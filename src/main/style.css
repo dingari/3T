@@ -7,6 +7,8 @@
 
     -fx-background-radius: 9,8,5,4;
 }
+.table-view{
+-fx-min-width:200px;}
 
 #main {
     -fx-padding: 50px;
