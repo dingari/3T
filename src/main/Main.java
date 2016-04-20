@@ -1,6 +1,8 @@
 package main;
 
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Scene;
@@ -37,6 +39,8 @@ public class Main extends Application {
     TableView<HotelWrapper> tableViewHotels;
     TableView<Tour> tableViewTours;
     TableView<Cart> tableViewCart;
+
+    ObservableList<Cart> cartList = FXCollections.observableArrayList();
 
     public static void main(String[] args) {
         launch(args);
@@ -309,6 +313,7 @@ public class Main extends Application {
         hotelLocation.setValue("Reykjavík");
         hotelLocation.setOnAction(e -> searchController.setDestLocation(hotelLocation.getValue()));
         hotelLocation.setMaxWidth(Double.MAX_VALUE);
+        searchController.setDestLocation("Reykjavík");
 
         CheckBox cb1 = new CheckBox();
         CheckBox cb2 = new CheckBox();
@@ -386,18 +391,33 @@ public class Main extends Application {
         RadioButton rb1 = new RadioButton("All hotels");
         rb1.setToggleGroup(groupH);
         rb1.setSelected(true);
+        rb1.setUserData("0");
 
         RadioButton rb2 = new RadioButton("Name");
         rb2.setToggleGroup(groupH);
+        rb2.setUserData("1");
 
         RadioButton rb3 = new RadioButton("Location");
         rb3.setToggleGroup(groupH);
+        rb3.setUserData("2");
 
         RadioButton rb4 = new RadioButton("Hotel chain");
         rb4.setToggleGroup(groupH);
+        rb4.setUserData("3");
 
         RadioButton rb5 = new RadioButton("Substring");
         rb5.setToggleGroup(groupH);
+        rb5.setUserData("4");
+
+        groupH.selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
+            public void changed(ObservableValue<? extends Toggle> ov,
+                                Toggle old_toggle, Toggle new_toggle) {
+                if (groupH.getSelectedToggle() != null) {
+                    String act = (String) groupH.getSelectedToggle().getUserData();
+                    searchController.setSelectedHotelSearchMethod(Integer.parseInt(act));
+                }
+            }
+        });
 
         VBox menuHotels = new VBox();
 
@@ -408,7 +428,6 @@ public class Main extends Application {
         TextField tFSH = new TextField ();
 
         menuHotels.getChildren().addAll(
-                hotelLocation,
                 checkInDate,
                 checkOutDate,
                 labelSH,
@@ -659,6 +678,8 @@ public class Main extends Application {
             borderPane.setCenter(mainTours);
         });
         buttonCart.setOnAction(e -> {
+            System.out.println(tableViewCart.getItems().size());
+            tableViewCart.setItems(cartList);
             borderPane.setLeft(menuCart);
             borderPane.setCenter(mainCart);
         });
@@ -684,7 +705,10 @@ public class Main extends Application {
 
         searchButtonFlight.setOnAction(e -> tableViewFlights.setItems(getFlights()));
 
-        searchHButton.setOnAction(e -> tableViewHotels.setItems(getHotels()));
+        searchHButton.setOnAction(e -> {
+            searchController.setHotelSearchString(tFSH.getText());
+            tableViewHotels.setItems(getHotels());
+        });
 
         comboToCart.setOnAction(e -> {
             System.out.println("Selected combo: " + tableViewCombo.getSelectionModel().getSelectedItem());
@@ -692,6 +716,11 @@ public class Main extends Application {
 
         buttonFlightToCart.setOnAction(e -> {
             System.out.println("Selected flight: " + tableViewFlights.getSelectionModel().getSelectedItem().getFlightNumber());
+            Flight selectedFlight = tableViewFlights.getSelectionModel().getSelectedItem();
+            Cart cart = new Cart("Flight", selectedFlight.getDepartureDate(), selectedFlight.getArrivalDate(), (int) selectedFlight.getPrice());
+
+            cartList.add(cart);
+            tableViewCart.setItems(cartList);
         });
 
         bookHButton.setOnAction(e -> {

@@ -90,6 +90,7 @@ public class SearchController {
 	}
 
 	public ArrayList<HotelWrapper> searchHotels() {
+		System.out.println(selectedHotelSearchMethod);
 		hotelSearch = new HotelFinder(dateToString(departureDate), dateToString(returnDate));
 		ArrayList<Hotel> hotels = new ArrayList<>();
 
