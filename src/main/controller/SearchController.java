@@ -3,8 +3,9 @@ package main.controller;
 import main.HotelWrapper;
 import main.TripCombo;
 import main.TripPlanner;
+import main.flightsearch.controllers.SearchEngine;
+import main.flightsearch.models.Flight;
 import main.mock.*;
-import main.service.FlightSearchService;
 import main.service.HotelFinderService;
 import main.service.TourSearchService;
 
@@ -18,7 +19,7 @@ import java.util.List;
 
 public class SearchController {
 
-	FlightSearchService flightSearch;
+	SearchEngine flightSearch;
     HotelFinderService hotelSearch;
     TourSearchService tourSearch;
     TripPlanner tripPlanner;
@@ -62,7 +63,7 @@ public class SearchController {
 
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
-		flightSearch = new FlightSearchMock();
+		flightSearch = new SearchEngine();
 		hotelSearch = new HotelFinderMock(dateToString(departDate), dateToString(returnDate));
 		tourSearch = new TourSearchMock();
 		tripPlanner = new TripPlanner(departDate, returnDate);
@@ -74,8 +75,9 @@ public class SearchController {
 	}
 
 	public ArrayList<Flight> searchFlights() {
+		System.out.println("Searching flights " + dateToString(departureDate) + ", " + departLocation + ", " + destLocation + ", " + numPeople);
         flightResults = flightSearch.searchFlightByCriteria(dateToString(departureDate), departLocation, destLocation, numPeople);
-        flightResults = flightSearch.filterFlightList(flightResults, flightTimeFrom, flightTimeTo, flightSagaSeats, flightWifi, false, maxPrice);
+//        flightResults = flightSearch.filterFlightList(flightResults, flightTimeFrom, flightTimeTo, flightSagaSeats, flightWifi, false, maxPrice);
 
 		return flightResults;
 	}

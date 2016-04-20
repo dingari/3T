@@ -4,22 +4,20 @@ import main.ComboBooking;
 import main.HotelBooking;
 import main.TourBooking;
 import main.TripCombo;
-import main.mock.Flight;
-import main.mock.FlightBookingMock;
+import main.flightsearch.controllers.BookingManager;
 import main.mock.HotelBookingMock;
 import main.mock.TourBookingMock;
-import main.service.FlightBookingService;
 import main.service.HotelBookingService;
 import main.service.TourBookingService;
 
 public class BookingController {
 
-    FlightBookingService flightBookingService;
+    BookingManager flightBookingService;
     HotelBookingService hotelBookingService;
     TourBookingService tourBookingService;
 
     public BookingController() {
-        this.flightBookingService = new FlightBookingMock();
+        this.flightBookingService = new BookingManager();
         this.hotelBookingService = new HotelBookingMock();
         this.tourBookingService = new TourBookingMock();
     }

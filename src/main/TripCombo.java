@@ -1,6 +1,6 @@
 package main;
 
-import main.mock.Flight;
+import main.flightsearch.models.Flight;
 import main.mock.Hotel;
 import main.mock.HotelRoom;
 import main.mock.Tour;
@@ -23,8 +23,8 @@ public class TripCombo {
     }
 
     public int getPrice() {
-        int outboundFlightPrice = (outboundFlight == null) ? 0 : outboundFlight.getPrice();
-        int inboundFlightPrice = (inboundFlight == null) ? 0 : inboundFlight.getPrice();
+        int outboundFlightPrice = (int) ((outboundFlight == null) ? 0 : outboundFlight.getPrice());
+        int inboundFlightPrice = (int) ((inboundFlight == null) ? 0 : inboundFlight.getPrice());
         int hotelPrice = (hotel == null) ? 0 : hotel.getRate();
         int tourPrice = (tour == null) ? 0 : tour.getPrice();
 

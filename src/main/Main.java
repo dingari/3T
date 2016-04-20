@@ -16,9 +16,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import main.controller.SearchController;
+import main.flightsearch.models.Flight;
 import main.mock.*;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -192,12 +194,13 @@ public class Main extends Application {
         // # date pickers
         DatePicker flightsDateFrom = new DatePicker();
         flightsDateFrom.setOnAction(e -> {
-            Date date = new Date(flightsDateFrom.getValue().toEpochDay());
+            Date date = Date.from(flightsDateFrom.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
             searchController.setDepartureDate(date);
         });
         DatePicker flightsDateTo = new DatePicker();
         flightsDateTo.setOnAction(e -> {
-            Date date = new Date(flightsDateTo.getValue().toEpochDay());
+            Date date = Date.from(flightsDateTo.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+            searchController.setReturnDate(date);
         });
 
         // # combo boxes
@@ -206,16 +209,19 @@ public class Main extends Application {
         ComboBox<String> flightsLocationFrom = new ComboBox<String>();
         flightsLocationFrom.getItems().addAll("Reykjavik","Akureyri","Egilsstadir","Isafjordur","Casablanca");
         flightsLocationFrom.setValue("Reykjavik");
+        searchController.setDepartLocation("Reykjavik");
         flightsLocationFrom.setOnAction(e -> searchController.setDepartLocation(flightsLocationFrom.getValue()));
         // # combo locations to
         ComboBox<String> flightsLocationTo = new ComboBox<String>();
         flightsLocationTo.getItems().addAll("Reykjavik","Akureyri","Egilsstadir","Isafjordur","Casablanca");
         flightsLocationTo.setValue("Reykjavik");
+        searchController.setDestLocation("Reykjavik");
         flightsLocationTo.setOnAction(e -> searchController.setDestLocation(flightsLocationTo.getValue()));
         // # combo passengers
         ComboBox<String> flightsPassengersNumber = new ComboBox<String>();
         flightsPassengersNumber.getItems().addAll("1","2","3","4","5");
         flightsPassengersNumber.setValue("1");
+        searchController.setNumPeople(1);
         flightsPassengersNumber.setOnAction(e -> searchController.setNumPeople(Integer.parseInt(flightsPassengersNumber.getValue())));
 
         // Flight luxuries
@@ -651,7 +657,7 @@ public class Main extends Application {
     }
 
     public void searchAll() {
-        tableViewCombo.setItems(getCombos());
+//        tableViewCombo.setItems(getCombos());
         tableViewFlights.setItems(getFlights());
         tableViewHotels.setItems(getHotels());
         tableViewTours.setItems(getTours());

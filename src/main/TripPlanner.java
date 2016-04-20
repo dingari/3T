@@ -1,7 +1,8 @@
 package main;
 
+import main.flightsearch.controllers.SearchEngine;
+import main.flightsearch.models.Flight;
 import main.mock.*;
-import main.service.FlightSearchService;
 import main.service.HotelFinderService;
 import main.service.TourSearchService;
 import main.util.Util;
@@ -32,7 +33,7 @@ public class TripPlanner {
 	private int minTourRating;
 	private boolean tourHotelPickup;
 
-	private FlightSearchService flightSearch;
+	private SearchEngine flightSearch;
 	private HotelFinderService hotelSearch;
 	private TourSearchService tourSearch;
 
@@ -83,7 +84,7 @@ public class TripPlanner {
 	}
 
 	public void initServices() {
-		flightSearch = new FlightSearchMock();
+		flightSearch = new SearchEngine();
 		hotelSearch = new HotelFinderMock(depTime.toString(), returnTime.toString());
 		tourSearch = new TourSearchMock();
 	}
@@ -102,8 +103,8 @@ public class TripPlanner {
 		ArrayList<Flight> returnFlightList = searchInboundFlights();
 
 		// Don't allow flight prices to be more than 1/3 of the max price
-		depFlightList = flightSearch.filterFlightList(depFlightList, null, null, false, false, false, priceHigher/3);
-		returnFlightList = flightSearch.filterFlightList(returnFlightList, null, null, false, false, false, priceHigher/3);
+//		depFlightList = flightSearch.filterFlightList(depFlightList, null, null, false, false, false, priceHigher/3);
+//		returnFlightList = flightSearch.filterFlightList(returnFlightList, null, null, false, false, false, priceHigher/3);
 
 		// Get a list of hotels near the destination
 		ArrayList<Hotel> hotelList = hotelSearch.getFreeRoomsFromHotelLocation(destLocation);
@@ -181,7 +182,7 @@ public class TripPlanner {
 		for(Flight flight: flights) {
 			if(flight.getPrice() < minPrice) {
 				cheapest = flight;
-				minPrice = flight.getPrice();
+				minPrice = (int) flight.getPrice();
 			}
 		}
 
