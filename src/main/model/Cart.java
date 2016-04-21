@@ -1,4 +1,4 @@
-package main;
+package main.model;
 
 /**
  * Created by Party on 20.4.2016.

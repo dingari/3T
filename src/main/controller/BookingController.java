@@ -1,16 +1,11 @@
 package main.controller;
 
-import main.ComboBooking;
-import main.HotelBooking;
-import main.TourBooking;
-import main.TripCombo;
+import main.model.ComboBooking;
+import main.model.TripCombo;
 import main.flightsearch.controllers.BookingManager;
 import main.hotelsearch.Booker;
 
 import java.sql.Date;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 
 public class BookingController {
 

@@ -1,5 +1,7 @@
-package main;
+package main.controller;
 
+import main.model.HotelWrapper;
+import main.model.TripCombo;
 import main.flightsearch.controllers.SearchEngine;
 import main.flightsearch.models.Flight;
 import main.hotelsearch.Hotel;
@@ -8,7 +10,6 @@ import main.toursearch.controller.SearchManager;
 import main.toursearch.model.Tour;
 import main.util.Util;
 
-import java.lang.reflect.Array;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;

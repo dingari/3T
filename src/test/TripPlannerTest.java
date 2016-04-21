@@ -1,7 +1,7 @@
 /*package test;
 
-import main.TripCombo;
-import main.TripPlanner;
+import main.model.TripCombo;
+import main.controller.TripPlanner;
 import org.junit.*;
 
 import static com.sun.xml.internal.ws.dump.LoggingDumpTube.Position.Before;

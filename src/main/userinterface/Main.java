@@ -1,4 +1,4 @@
-package main;
+package main.userinterface;
 
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
@@ -17,17 +17,17 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import main.model.Cart;
+import main.model.HotelWrapper;
+import main.model.TripCombo;
 import main.controller.SearchController;
 import main.flightsearch.models.Flight;
 import main.toursearch.model.Tour;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class Main extends Application {
 
@@ -55,12 +55,12 @@ public class Main extends Application {
         // Top menu
         HBox topMenu = new HBox();
 
-        Image imageCombo = new Image(getClass().getResourceAsStream("icombo.png"));
-        Image imageFlights = new Image(getClass().getResourceAsStream("iflights.png"));
-        Image imageHotels = new Image(getClass().getResourceAsStream("ihotels.png"));
-        Image imageTours = new Image(getClass().getResourceAsStream("itours.png"));
-        Image imageCart = new Image(getClass().getResourceAsStream("icart.png"));
-        Image imageSearch = new Image(getClass().getResourceAsStream("isearch.png"));
+        Image imageCombo = new Image(getClass().getResourceAsStream("img/icombo.png"));
+        Image imageFlights = new Image(getClass().getResourceAsStream("img/iflights.png"));
+        Image imageHotels = new Image(getClass().getResourceAsStream("img/ihotels.png"));
+        Image imageTours = new Image(getClass().getResourceAsStream("img/itours.png"));
+        Image imageCart = new Image(getClass().getResourceAsStream("img/icart.png"));
+        Image imageSearch = new Image(getClass().getResourceAsStream("img/isearch.png"));
 
         Button buttonCombo = new Button("Combo", new ImageView(imageCombo));
         Button buttonFlights = new Button("Flight",new ImageView(imageFlights));
@@ -808,12 +808,12 @@ public class Main extends Application {
 
         primaryStage.setTitle("Trip Planner 3000");
 
-        Image icon = new Image(getClass().getResourceAsStream("icon.png"));
+        Image icon = new Image(getClass().getResourceAsStream("img/icon.png"));
         primaryStage.getIcons().add(icon);
 
         Scene scene = new Scene(borderPane, 800, 600);
         primaryStage.setScene(scene);
-        scene.getStylesheets().add("main/style.css");
+        scene.getStylesheets().add("main/userinterface/style.css");
         primaryStage.show();
     }
 
